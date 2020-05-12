@@ -1,0 +1,32 @@
+{
+    "schemaVersion": 1,
+    "id": "farmerlib",
+    "version": "${version}",
+    "name": "farmerlib",
+    "description": "a library used by my mods",
+    "authors": [
+        "transfarmer"
+    ],
+    "contact": {
+        "sources": "https://github.com/transfarmer/farmerlib"
+    },
+    "license": "CC0-1.0",
+    "icon": "assets/farmerlib/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "transfarmer.farmerlib.Main"
+        ],
+        "client": [
+            "transfarmer.farmerlib.MainClient"
+        ]
+    },
+    "mixins": [
+        "farmerlib.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.8.2+build.194",
+        "fabric": "*",
+        "minecraft": "1.15.2"
+    }
+}
