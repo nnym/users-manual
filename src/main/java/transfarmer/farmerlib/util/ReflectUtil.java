@@ -19,7 +19,7 @@ public class ReflectUtil {
 
     @Nonnull
     public static <U> U getFieldValue(final Class<?> clazz, final Object object, final String fieldName) {
-        return getFieldValue(object, getNewestField(clazz, fieldName));
+        return getFieldValue(object, getLowestField(clazz, fieldName));
     }
 
     @Nonnull
@@ -49,7 +49,7 @@ public class ReflectUtil {
 
     public static void setField(final Class<?> clazz, final Object object, final String fieldName, final Object value) {
         try {
-            final Field field = getNewestField(clazz, fieldName);
+            final Field field = getLowestField(clazz, fieldName);
 
             if (object == null) {
                 setField(field, "modifiers", field.getModifiers() & ~Modifier.FINAL);
@@ -63,27 +63,27 @@ public class ReflectUtil {
         }
     }
 
-    public static Method getNewestMethod(final Object object, final String methodName, final Class<?>... parameterTypes) {
-        return getNewestMethod(object.getClass(), methodName, parameterTypes);
+    public static Method getLowestMethod(final Object object, final String methodName, final Class<?>... parameterTypes) {
+        return getLowestMethod(object.getClass(), methodName, parameterTypes);
     }
 
-    public static Method getNewestMethod(final Class<?> clazz, final String methodName, final Class<?>... parameterTypes) {
+    public static Method getLowestMethod(final Class<?> clazz, final String methodName, final Class<?>... parameterTypes) {
         try {
             return clazz.getDeclaredMethod(methodName, parameterTypes);
         } catch (final NoSuchMethodException exception) {
-            return getNewestMethod(clazz.getSuperclass(), methodName, parameterTypes);
+            return getLowestMethod(clazz.getSuperclass(), methodName, parameterTypes);
         }
     }
 
-    public static Field getNewestField(final Object object, final String fieldName) {
-        return getNewestField(object.getClass(), fieldName);
+    public static Field getLowestField(final Object object, final String fieldName) {
+        return getLowestField(object.getClass(), fieldName);
     }
 
-    public static Field getNewestField(final Class<?> clazz, final String fieldName) {
+    public static Field getLowestField(final Class<?> clazz, final String fieldName) {
         try {
             return clazz.getDeclaredField(fieldName);
         } catch (final NoSuchFieldException exception) {
-            return getNewestField(clazz.getSuperclass(), fieldName);
+            return getLowestField(clazz.getSuperclass(), fieldName);
         }
     }
 

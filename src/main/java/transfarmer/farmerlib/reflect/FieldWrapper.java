@@ -7,15 +7,17 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import static transfarmer.farmerlib.util.ReflectUtil.setField;
-
 @SuppressWarnings({"ConstantConditions", "unchecked"})
 public class FieldWrapper<F, O> {
     protected final Field field;
     protected final O object;
 
     public FieldWrapper(final O object, final String field) {
-        this(object, ReflectUtil.getNewestField(object, field));
+        this((Class<? super O>) object.getClass(), object, field);
+    }
+
+    public FieldWrapper(final Class<? super O> clazz, final O object, final String field) {
+        this(object, ReflectUtil.getLowestField(clazz, field));
     }
 
     public FieldWrapper(final O object, final Field field) {
@@ -26,7 +28,7 @@ public class FieldWrapper<F, O> {
     }
 
     public FieldWrapper(final Class<?> clazz, final String field) {
-        this(ReflectUtil.getNewestField(clazz, field));
+        this(ReflectUtil.getLowestField(clazz, field));
     }
 
     public FieldWrapper(final Field field) {
@@ -59,7 +61,7 @@ public class FieldWrapper<F, O> {
 
     protected void setAccessible() {
         if (this.object == null) {
-            setField(this.field, "modifiers", this.field.getModifiers() & ~Modifier.FINAL);
+            ReflectUtil.setField(this.field, "modifiers", this.field.getModifiers() & ~Modifier.FINAL);
         }
 
         this.field.setAccessible(true);
