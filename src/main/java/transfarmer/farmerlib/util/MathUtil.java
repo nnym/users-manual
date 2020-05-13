@@ -92,4 +92,16 @@ public class MathUtil {
 
         return sum;
     }
+
+    public static int ceil(final double value) {
+        final int floor = (int) value;
+
+        return value == 0D ? floor : floor + 1;
+    }
+
+    public static int ceil(final float value) {
+        final int floor = (int) value;
+
+        return value == 0F ? floor : floor + 1;
+    }
 }
