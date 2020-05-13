@@ -63,11 +63,13 @@ public class ReflectUtil {
         }
     }
 
-    public static Method getLowestMethod(final Object object, final String methodName, final Class<?>... parameterTypes) {
+    public static Method getLowestMethod(final Object object, final String methodName,
+                                         final Class<?>... parameterTypes) {
         return getLowestMethod(object.getClass(), methodName, parameterTypes);
     }
 
-    public static Method getLowestMethod(final Class<?> clazz, final String methodName, final Class<?>... parameterTypes) {
+    public static Method getLowestMethod(final Class<?> clazz, final String methodName,
+                                         final Class<?>... parameterTypes) {
         try {
             return clazz.getDeclaredMethod(methodName, parameterTypes);
         } catch (final NoSuchMethodException exception) {
