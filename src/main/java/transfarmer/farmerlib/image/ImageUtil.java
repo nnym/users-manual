@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util;
+package transfarmer.farmerlib.image;
 
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;

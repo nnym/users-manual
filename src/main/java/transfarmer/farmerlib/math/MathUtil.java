@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util;
+package transfarmer.farmerlib.math;
 
 public class MathUtil {
     public static double signum(final double first, final double... others) {

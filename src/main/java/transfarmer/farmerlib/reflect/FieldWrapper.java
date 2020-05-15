@@ -1,7 +1,6 @@
 package transfarmer.farmerlib.reflect;
 
 import transfarmer.farmerlib.Main;
-import transfarmer.farmerlib.util.ReflectUtil;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;

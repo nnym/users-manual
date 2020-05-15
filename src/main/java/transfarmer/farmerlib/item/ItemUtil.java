@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util;
+package transfarmer.farmerlib.item;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DefaultedList;
+import transfarmer.farmerlib.collection.CollectionUtil;
 
 import java.util.Arrays;
 import java.util.List;

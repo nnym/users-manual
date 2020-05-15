@@ -3,8 +3,10 @@
     "package": "transfarmer.farmerlib.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
+        "I18n.MixinI18n"
     ],
     "client": [
+        "I18n.MixinLanguage"
     ],
     "injectors": {
         "defaultRequire": 1

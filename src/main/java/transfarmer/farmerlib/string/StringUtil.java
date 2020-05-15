@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util;
+package transfarmer.farmerlib.string;
 
 public class StringUtil {
     public static String macroCaseToCamelCase(final String string) {
