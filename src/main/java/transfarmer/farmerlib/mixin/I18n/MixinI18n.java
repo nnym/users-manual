@@ -6,8 +6,10 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import transfarmer.farmerlib.event.TranslationEvent;
 
 @Environment(EnvType.CLIENT)
@@ -19,22 +21,22 @@ public abstract class MixinI18n {
     /**
      * This Mixin method adds a hook in {@link I18n#translate} to TranslateEvent
      * for modification of translation results.
-     *
-     * @author transfarmer
      */
-    @Overwrite
-    public static String translate(final String key, final Object... args) {
+    @Inject(method = "translate", at = @At("RETURN"), cancellable = true)
+    private static void translate(final String key, final Object[] args, final CallbackInfoReturnable<String> info) {
         final TranslationEvent event = TranslationEvent.fire(storage.translate(key, args), key, args);
         final ActionResult result = event.getResult();
 
         switch (result) {
             case SUCCESS:
             case CONSUME:
-                return event.getValue();
+                info.setReturnValue(event.getValue());
+                break;
             case FAIL:
-                return key;
+                info.setReturnValue(key);
+                break;
             default:
-                return storage.translate(event.getKey(), event.getArgs().toArray());
+                info.setReturnValue(storage.translate(event.getKey(), event.getArgs().toArray()));
         }
     }
 }

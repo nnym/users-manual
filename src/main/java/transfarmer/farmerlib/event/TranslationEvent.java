@@ -2,7 +2,6 @@ package transfarmer.farmerlib.event;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.ActionResult;
 
 import java.util.ArrayList;
@@ -10,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static net.minecraft.util.ActionResult.CONSUME;
-import static net.minecraft.util.ActionResult.FAIL;
-import static net.minecraft.util.ActionResult.SUCCESS;
 
 /**
  * This event is called when {@link I18n#translate} is called.
@@ -67,16 +64,6 @@ public class TranslationEvent extends Event<TranslationEvent> {
     }
 
     public static TranslationEvent fire(final String value, final String key, final Object... args) {
-        final TranslationEvent event = new TranslationEvent(value, key, args);
-
-        for (final Listener<TranslationEvent> listener : MANAGER.getListeners()) {
-            if (event.getResult() == FAIL || event.getResult() == SUCCESS) {
-                return event;
-            }
-
-            listener.accept(event);
-        }
-
-        return event;
+        return MANAGER.fire(new TranslationEvent(value, key, args));
     }
 }

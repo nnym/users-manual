@@ -2,6 +2,9 @@ package transfarmer.farmerlib.event;
 
 import java.util.function.Consumer;
 
+import static net.minecraft.util.ActionResult.FAIL;
+import static net.minecraft.util.ActionResult.SUCCESS;
+
 public class EventManager<E extends Event<?>> {
     protected final EventList<E> listeners;
     protected final Class<E> listenerClass;
@@ -15,15 +18,29 @@ public class EventManager<E extends Event<?>> {
         return this.listeners;
     }
 
-    public void register(final Consumer<E> listener) {
-        this.register(listener, EventPriority.FIVE);
+    public void register(final Consumer<E> consumer) {
+        this.register(consumer, EventPriority.FIVE);
     }
 
-    public void register(final Consumer<E> listener, final int priority) {
-        this.register(listener, priority, false);
+    public void register(final Consumer<E> consumer, final int priority) {
+        this.register(consumer, priority, false);
     }
 
-    public void register(final Consumer<E> listener, final int priority, final boolean persist) {
-        listeners.add(this.listenerClass, listener, priority, persist);
+    public void register(final Consumer<E> consumer, final boolean persistence) {
+        this.register(consumer, EventPriority.FIVE, persistence);
+    }
+
+    public void register(final Consumer<E> consumer, final int priority, final boolean persistence) {
+        this.listeners.add(this.listenerClass, consumer, priority, persistence);
+    }
+
+    public E fire(final E event) {
+        for (final EventListener<E> listener : this.getListeners()) {
+            if (event.getResult() != FAIL && event.getResult() != SUCCESS || listener.isPersistent()) {
+                listener.accept(event);
+            }
+        }
+
+        return event;
     }
 }
