@@ -8,8 +8,8 @@ import net.minecraft.util.ActionResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
+import static net.minecraft.util.ActionResult.CONSUME;
 import static net.minecraft.util.ActionResult.FAIL;
 import static net.minecraft.util.ActionResult.SUCCESS;
 
@@ -17,11 +17,18 @@ import static net.minecraft.util.ActionResult.SUCCESS;
  * This event is called when {@link I18n#translate} is called.
  * It allows listeners to modify translation key, arguments and return value of the method call.
  *
- * A {@link ActionResult#FAIL} result cancels the translation, returning the key.
+ * A {@link ActionResult#SUCCESS} {@link Event#result} sets the return value to {@link TranslationEvent#value}
+ * and cancels further processing.
+ * A {@link ActionResult#CONSUME} {@link Event#result} sets the return value to {@link TranslationEvent#value}
+ * and does not cancel further processing.
+ * A {@link ActionResult#PASS} {@link Event#result} translates the new key and arguments.
+ * and does not cancel further processing.
+ * A {@link ActionResult#FAIL} {@link Event#result} sets the return value to {@link TranslationEvent#key}
+ * and cancels further processing.
  */
 @Environment(EnvType.CLIENT)
-public class TranslationEvent extends Event {
-    protected static final EventList<TranslationEvent> LISTENERS = createList();
+public class TranslationEvent extends Event<TranslationEvent> {
+    public static final EventManager<TranslationEvent> MANAGER = new EventManager<>(TranslationEvent.class);
 
     protected String value;
     protected String key;
@@ -36,7 +43,7 @@ public class TranslationEvent extends Event {
     }
 
     /**
-     * @return the return value
+     * @return the return value of the translation
      */
     public String getValue() {
         return this.value;
@@ -56,20 +63,13 @@ public class TranslationEvent extends Event {
 
     public void setValue(final String value) {
         this.value = value;
-    }
-
-    public static void register(final Consumer<TranslationEvent> listener) {
-        LISTENERS.add(TranslationEvent.class, listener);
-    }
-
-    public static void register(final Consumer<TranslationEvent> listener, final int priority) {
-        LISTENERS.add(TranslationEvent.class, listener, priority);
+        this.result = CONSUME;
     }
 
     public static TranslationEvent fire(final String value, final String key, final Object... args) {
         final TranslationEvent event = new TranslationEvent(value, key, args);
 
-        for (final Listener<TranslationEvent> listener : LISTENERS) {
+        for (final Listener<TranslationEvent> listener : MANAGER.getListeners()) {
             if (event.getResult() == FAIL || event.getResult() == SUCCESS) {
                 return event;
             }

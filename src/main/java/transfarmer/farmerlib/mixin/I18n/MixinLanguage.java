@@ -2,11 +2,12 @@ package transfarmer.farmerlib.mixin.I18n;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import transfarmer.farmerlib.event.TranslationEvent;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Language.class)
@@ -18,6 +19,17 @@ public abstract class MixinLanguage {
      */
     @Overwrite
     public synchronized String translate(final String key) {
-        return I18n.translate(key);
+        final TranslationEvent event = TranslationEvent.fire(this.getTranslation(key), key);
+        final ActionResult result = event.getResult();
+
+        switch (result) {
+            case SUCCESS:
+            case CONSUME:
+                return event.getValue();
+            case FAIL:
+                return key;
+            default:
+                return this.getTranslation(event.getKey());
+        }
     }
 }
