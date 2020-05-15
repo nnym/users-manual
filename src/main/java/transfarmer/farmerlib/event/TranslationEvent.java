@@ -2,7 +2,9 @@ package transfarmer.farmerlib.event;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Language;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +13,7 @@ import java.util.List;
 import static net.minecraft.util.ActionResult.CONSUME;
 
 /**
- * This event is called when {@link I18n#translate} is called.
+ * This event is called when {@link I18n#translate} and {@link Language#translate} are called.
  * It allows listeners to modify translation key, arguments and return value of the method call.
  *
  * A {@link ActionResult#SUCCESS} {@link Event#result} sets the return value to {@link TranslationEvent#value}
