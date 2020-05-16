@@ -96,4 +96,8 @@ public class ItemUtil {
     public static List<Item> getHandItems(final PlayerEntity player) {
         return ImmutableList.of(player.getMainHandStack().getItem(), player.getOffHandStack().getItem());
     }
+
+    public boolean isItemEquipped(final PlayerEntity player, final Item item) {
+        return getHandItems(player).contains(item);
+    }
 }
