@@ -1,5 +1,6 @@
 package transfarmer.farmerlib.item;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -90,5 +91,9 @@ public class ItemUtil {
 
     public static boolean areItemsEqual(final ItemStack itemStack0, final ItemStack itemStack1) {
         return itemStack0.getItem() == itemStack1.getItem() && ItemStack.areTagsEqual(itemStack0, itemStack1);
+    }
+
+    public static List<Item> getHandItems(final PlayerEntity player) {
+        return ImmutableList.of(player.getMainHandStack().getItem(), player.getOffHandStack().getItem());
     }
 }
