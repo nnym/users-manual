@@ -1,15 +1,11 @@
 package transfarmer.farmerlib.reflect;
 
-import net.minecraft.item.Item;
 import transfarmer.farmerlib.Main;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.UUID;
-
-import static transfarmer.farmerlib.Main.DEBUG;
 
 @SuppressWarnings({"unchecked", "ConstantConditions"})
 public class ReflectUtil {
@@ -87,13 +83,5 @@ public class ReflectUtil {
         } catch (final NoSuchFieldException exception) {
             return getLowestField(clazz.getSuperclass(), fieldName);
         }
-    }
-
-    public static UUID getAttackDamageModifier() {
-        return getFieldValue(Item.class, null, DEBUG ? "ATTACK_DAMAGE_MODIFIER" : "field_111210_e");
-    }
-
-    public static UUID getAttackSpeedModifier() {
-        return getFieldValue(Item.class, null, DEBUG ? "ATTACK_SPEED_MODIFIER" : "field_185050_h");
     }
 }
