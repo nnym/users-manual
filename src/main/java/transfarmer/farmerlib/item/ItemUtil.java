@@ -81,16 +81,12 @@ public class ItemUtil {
 
     public static int getSlotFor(final PlayerInventory inventory, final ItemStack itemStack) {
         for (int i = 0; i < inventory.main.size(); ++i) {
-            if (!inventory.main.get(i).isEmpty() && areItemsEqual(itemStack, inventory.main.get(i))) {
+            if (!inventory.main.get(i).isEmpty() && ItemStack.areEqualIgnoreDamage(itemStack, inventory.main.get(i))) {
                 return i;
             }
         }
 
         return -1;
-    }
-
-    public static boolean areItemsEqual(final ItemStack itemStack0, final ItemStack itemStack1) {
-        return itemStack0.getItem() == itemStack1.getItem() && ItemStack.areTagsEqual(itemStack0, itemStack1);
     }
 
     public static List<Item> getHandItems(final PlayerEntity player) {
