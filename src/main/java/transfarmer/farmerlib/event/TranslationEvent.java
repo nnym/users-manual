@@ -1,7 +1,5 @@
 package transfarmer.farmerlib.event;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Language;
@@ -25,7 +23,6 @@ import static net.minecraft.util.ActionResult.CONSUME;
  * A {@link ActionResult#FAIL} {@link Event#result} sets the return value to {@link TranslationEvent#key}
  * and cancels further processing.
  */
-@Environment(EnvType.CLIENT)
 public class TranslationEvent extends Event<TranslationEvent> {
     public static final EventManager<TranslationEvent> MANAGER = new EventManager<>(TranslationEvent.class);
 
