@@ -1,5 +1,7 @@
 package transfarmer.farmerlib.math;
 
+import java.util.Random;
+
 public class MathUtil {
     public static double signum(final double first, final double... others) {
         double sign = Math.signum(first);
@@ -96,12 +98,16 @@ public class MathUtil {
     public static int ceil(final double value) {
         final int floor = (int) value;
 
-        return value == 0D ? floor : floor + 1;
+        return value == floor ? floor : floor + 1;
     }
 
     public static int ceil(final float value) {
         final int floor = (int) value;
 
-        return value == 0F ? floor : floor + 1;
+        return value == floor ? floor : floor + 1;
+    }
+
+    public static int roundRandomly(final double value, final Random random) {
+        return random.nextDouble() < 0.5 ? (int) value : ceil(value);
     }
 }
