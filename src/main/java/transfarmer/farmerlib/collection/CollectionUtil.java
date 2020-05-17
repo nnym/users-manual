@@ -116,4 +116,9 @@ public class CollectionUtil {
             collection.add(element);
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] toArray(final List<T> list) {
+        return (T[]) list.toArray();
+    }
 }
