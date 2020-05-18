@@ -19,7 +19,7 @@ public abstract class MixinI18n {
     private static TranslationStorage storage;
 
     /**
-     * This Mixin method adds a hook in {@link I18n#translate} to TranslateEvent
+     * This Mixin method adds a hook in {@link I18n#translate(String, Object[])} to TranslateEvent
      * for modification of translation results.
      */
     @Inject(method = "translate", at = @At("RETURN"), cancellable = true)
