@@ -1,7 +1,4 @@
-package transfarmer.farmerlib.collection;
-
-import transfarmer.farmerlib.util.IndexedLinkedHashMap;
-import transfarmer.farmerlib.util.IndexedMap;
+package transfarmer.farmerlib.collections;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package transfarmer.farmerlib.event;
 
-import transfarmer.farmerlib.collection.CollectionUtil;
+import transfarmer.farmerlib.collections.CollectionUtil;
 
 import java.util.List;
 

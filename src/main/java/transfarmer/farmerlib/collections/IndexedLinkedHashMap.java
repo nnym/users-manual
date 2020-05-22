@@ -1,12 +1,14 @@
-package transfarmer.farmerlib.util;
+package transfarmer.farmerlib.collections;
+
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceLinkedOpenHashMap;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-public class IndexedLinkedHashMap<K, V> extends LinkedHashMap<K, V> implements IndexedMap<K, V> {
+@Deprecated
+public class IndexedLinkedHashMap<K, V> extends Reference2ReferenceLinkedOpenHashMap<K, V> implements IndexedMap<K, V> {
     public IndexedLinkedHashMap() {
         super();
     }

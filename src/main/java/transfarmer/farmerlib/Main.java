@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 public class Main implements ModInitializer {
     public static final String MOD_ID = "farmerlib";
     public static final String MOD_NAME = "farmerlib";
-    public static final String VERSION = "0.2.0";
 
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
@@ -16,5 +15,26 @@ public class Main implements ModInitializer {
 
     @Override
     public void onInitialize() {
+//        final ParallelList<Integer, Integer> list = new ParallelArrayList<>();
+//
+//        list.add(9, 0);
+//        list.add(8, 0);
+//        list.add(7, 5);
+//        list.add(7, 5);
+//        list.add(7, 0);
+//        list.add(7, 0);
+//        list.add(7, 5);
+//        list.add(4, 0);
+//        list.add(2, 0);
+//        list.add(2, 0);
+//        list.add(1, 1);
+//        list.add(1, 1);
+//        list.add(1, 0);
+//        list.remove(12);
+//        list.remove(0);
+//
+//        LOGGER.warn(list.asString());
+//        LOGGER.warn(Arrays.toString(list.keyList().toArray()));
+//        LOGGER.warn(Arrays.toString(list.valueList().toArray()));
     }
 }

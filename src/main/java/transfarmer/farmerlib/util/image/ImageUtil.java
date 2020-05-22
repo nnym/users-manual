@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.image;
+package transfarmer.farmerlib.util.image;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

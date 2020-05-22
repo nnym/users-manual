@@ -22,8 +22,10 @@ dependencies {
 
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabricVersion}"
 
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    include 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation "${project.jsr}"
+    include "${project.jsr}"
+
+    modImplementation "${project.modMenu}"
 }
 
 processResources {

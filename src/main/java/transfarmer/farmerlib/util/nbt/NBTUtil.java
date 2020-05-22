@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.nbt;
+package transfarmer.farmerlib.util.nbt;
 
 import net.minecraft.nbt.CompoundTag;
 

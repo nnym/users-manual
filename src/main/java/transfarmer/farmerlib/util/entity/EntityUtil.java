@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.entity;
+package transfarmer.farmerlib.util.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
