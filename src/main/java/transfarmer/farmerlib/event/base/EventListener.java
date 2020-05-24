@@ -1,15 +1,15 @@
-package transfarmer.farmerlib.event;
+package transfarmer.farmerlib.event.base;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-class EventListener<E> implements Comparable<EventListener<E>> {
+public class EventListener<E> implements Comparable<EventListener<E>> {
     protected final Class<E> clazz;
     protected final Consumer<E> consumer;
     protected final int priority;
     protected final boolean persistence;
 
-    protected EventListener(final Class<E> eventClass, final Consumer<E> consumer, final int priority,
+    public EventListener(final Class<E> eventClass, final Consumer<E> consumer, final int priority,
                             final boolean persistence) {
         this.clazz = eventClass;
         this.consumer = consumer;
@@ -40,7 +40,7 @@ class EventListener<E> implements Comparable<EventListener<E>> {
 
     @Override
     public int compareTo(@Nonnull final EventListener<E> other) {
-        return Integer.compare(this.priority, other.priority);
+        return this.priority - other.priority;
     }
 
     public void accept(final E event) {

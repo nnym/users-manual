@@ -3,6 +3,8 @@ package transfarmer.farmerlib.event;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Language;
+import transfarmer.farmerlib.event.base.Event;
+import transfarmer.farmerlib.event.base.EventInvoker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +26,7 @@ import static net.minecraft.util.ActionResult.CONSUME;
  * and cancels further processing.
  */
 public class TranslationEvent extends Event<TranslationEvent> {
-    public static final EventManager<TranslationEvent> MANAGER = new EventManager<>(TranslationEvent.class);
+    public static final EventInvoker<TranslationEvent> INVOKER = new EventInvoker<>(TranslationEvent.class);
 
     protected String value;
     protected String key;
@@ -63,6 +65,6 @@ public class TranslationEvent extends Event<TranslationEvent> {
     }
 
     public static TranslationEvent fire(final String value, final String key, final Object... args) {
-        return MANAGER.fire(new TranslationEvent(value, key, args));
+        return INVOKER.fire(new TranslationEvent(value, key, args));
     }
 }

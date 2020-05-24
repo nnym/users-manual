@@ -1,15 +1,15 @@
-package transfarmer.farmerlib.event;
+package transfarmer.farmerlib.event.base;
 
 import java.util.function.Consumer;
 
 import static net.minecraft.util.ActionResult.FAIL;
 import static net.minecraft.util.ActionResult.SUCCESS;
 
-public class EventManager<E extends Event<?>> {
+public class EventInvoker<E extends Event<?>> {
     protected final EventList<E> listeners;
     protected final Class<E> listenerClass;
 
-    protected EventManager(final Class<E> listenerClass) {
+    public EventInvoker(final Class<E> listenerClass) {
         this.listeners = new EventList<>();
         this.listenerClass = listenerClass;
     }

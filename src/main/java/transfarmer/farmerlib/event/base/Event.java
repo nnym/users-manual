@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.event;
+package transfarmer.farmerlib.event.base;
 
 import net.minecraft.util.ActionResult;
 
@@ -6,6 +6,8 @@ import static net.minecraft.util.ActionResult.PASS;
 
 /**
  * the base class used for events.
+ *
+ * A {@link ActionResult#FAIL} {@link Event#result} should cancel further processing and return early.
  */
 public abstract class Event<E extends Event<?>> {
     protected ActionResult result;

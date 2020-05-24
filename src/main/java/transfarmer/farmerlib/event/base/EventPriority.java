@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.event;
+package transfarmer.farmerlib.event.base;
 
 import transfarmer.farmerlib.collections.CollectionUtil;
 
