@@ -4,12 +4,12 @@ plugins {
 }
 
 apply plugin: "maven"
+apply from: "common.gradle"
+apply from: "project.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName = project.archiveBaseName
-version = project.modVersion
 group = project.mavenGroup
 
 minecraft {
@@ -20,7 +20,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarnMappings}:v2"
     modCompile "net.fabricmc:fabric-loader:${project.loaderVersion}"
 
-    modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabricVersion}"
+    modCompile "net.fabricmc.fabric-api:fabric-api:${project.apiVersion}"
 
     implementation "${project.jsr}"
     include "${project.jsr}"
