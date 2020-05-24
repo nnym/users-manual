@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/transfarmer/farmerlib/1.15.2/resources/logo.png" width="20%"></img>
+<img src="https://raw.githubusercontent.com/transfarmer/farmerlib/1.15.2/src/main/resources/assets/farmerlib/logo.png" width="20%"></img>
 
 # farmerlib
 a library used by my mods
