@@ -5,20 +5,20 @@
     "name": "farmerlib",
     "description": "a library used by my mods",
     "authors": [
-        "transfarmer"
+        "user11681"
     ],
     "contact": {
-        "sources": "https://github.com/transfarmer/farmerlib"
+        "sources": "https://github.com/user11681/farmerlib"
     },
     "license": "CC0-1.0",
     "icon": "assets/farmerlib/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "transfarmer.farmerlib.Main"
+            "user11681.farmerlib.Main"
         ],
         "client": [
-            "transfarmer.farmerlib.MainClient"
+            "user11681.farmerlib.MainClient"
         ]
     },
     "mixins": [

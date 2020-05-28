@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util.string;
+package user11681.farmerlib.string;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

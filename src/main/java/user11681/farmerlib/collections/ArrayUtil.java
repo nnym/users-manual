@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.collections;
+package user11681.farmerlib.collections;
 
 public class ArrayUtil {
     @SuppressWarnings("unchecked")

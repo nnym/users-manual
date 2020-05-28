@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util.image;
+package user11681.farmerlib.image;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -6,7 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import transfarmer.farmerlib.Main;
+import user11681.farmerlib.Main;
 
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;

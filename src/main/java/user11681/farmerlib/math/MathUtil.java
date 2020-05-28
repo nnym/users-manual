@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util.math;
+package user11681.farmerlib.math;
 
 import java.util.Random;
 

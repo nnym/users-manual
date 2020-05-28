@@ -1,4 +1,4 @@
-package transfarmer.farmerlib.util.item;
+package user11681.farmerlib.item;
 
 import net.minecraft.item.Item;
 

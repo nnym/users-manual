@@ -1,4 +1,4 @@
-package transfarmer.farmerlib;
+package user11681.farmerlib;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;

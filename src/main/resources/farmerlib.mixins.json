@@ -1,6 +1,6 @@
 {
     "required": true,
-    "package": "transfarmer.anvil.mixin",
+    "package": "user11681.anvil.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
     ],

@@ -1,6 +1,6 @@
-package transfarmer.farmerlib.reflect;
+package user11681.farmerlib.reflect;
 
-import transfarmer.farmerlib.Main;
+import user11681.farmerlib.Main;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
