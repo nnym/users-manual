@@ -27,6 +27,10 @@ public class RomanNumerals {
     }
 
     public static String fromDecimal(long decimal) {
+        if (decimal == 0) {
+            return "nulla";
+        }
+
         final StringBuilder roman = new StringBuilder();
 
         for (final int value : TO_ROMAN.keySet()) {
