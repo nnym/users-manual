@@ -1,28 +1,27 @@
 {
     "schemaVersion": 1,
-    "id": "farmerlib",
+    "id": "usersmanual",
     "version": "${version}",
-    "name": "farmerlib",
+    "name": "usersmanual",
     "description": "a library used by my mods",
     "authors": [
         "user11681"
     ],
     "contact": {
-        "sources": "https://github.com/user11681/farmerlib"
+        "sources": "https://github.com/user11681/usersmanual"
     },
     "license": "CC0-1.0",
-    "icon": "assets/farmerlib/icon.png",
+    "icon": "assets/usersmanual/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "user11681.farmerlib.Main"
+            "user11681.usersmanual.Main"
         ],
         "client": [
-            "user11681.farmerlib.MainClient"
+            "user11681.usersmanual.MainClient"
         ]
     },
     "mixins": [
-        "farmerlib.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.8.2+build.194",
