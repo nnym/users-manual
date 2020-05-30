@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "usersmanual",
-    "version": "0.2.0",
+    "version": "0.1.0",
     "name": "user's manual",
     "description": "a library used by my mods",
     "authors": [
