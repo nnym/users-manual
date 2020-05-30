@@ -13,6 +13,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ItemUtil {
+    public static List<List<ItemStack>> getCombinedInventory(final PlayerEntity player) {
+        final PlayerInventory inventory = player.inventory;
+
+        return Arrays.asList(inventory.main, inventory.offHand, inventory.armor);
+    }
+
+    public static List<ItemStack> getCombinedSingleInventory(final PlayerEntity player) {
+        final PlayerInventory inventory = player.inventory;
+
+        return CollectionUtil.merge(inventory.main, inventory.offHand, inventory.armor);
+    }
+
     public static boolean hasItem(final Item item, final PlayerEntity player) {
         for (final ItemStack itemStack : player.inventory.main) {
             if (itemStack.getItem() == item) {
