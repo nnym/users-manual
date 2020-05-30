@@ -1,9 +1,9 @@
 package user11681.usersmanual.collections;
 
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
-import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class CollectionUtil {
 
     @SafeVarargs
     public static <T> List<T> arrayList(final T[]... from) {
-        final List<T> to = new ReferenceArrayList<>();
+        final List<T> to = new ArrayList<>();
 
         for (final T[] array : from) {
             to.addAll(arrayList(array));
@@ -32,7 +32,7 @@ public class CollectionUtil {
 
     @SafeVarargs
     public static <T> List<T> arrayList(final T... from) {
-        final List<T> to = new ReferenceArrayList<>();
+        final List<T> to = new ArrayList<>();
 
         for (final T element : from) {
             to.add(element);
@@ -43,7 +43,7 @@ public class CollectionUtil {
 
     @SafeVarargs
     public static <T> List<T> arrayList(final Collection<T> collection, final T... elements) {
-        final List<T> to = new ReferenceArrayList<>(collection);
+        final List<T> to = new ArrayList<>(collection);
 
         for (final T element : elements) {
             to.add(element);
@@ -54,7 +54,7 @@ public class CollectionUtil {
 
     @SafeVarargs
     public static <T> List<T> arrayList(final Collection<T>... from) {
-        final List<T> to = new ReferenceArrayList<>();
+        final List<T> to = new ArrayList<>();
 
         for (final Collection<T> collection : from) {
             to.addAll(collection);
@@ -65,7 +65,7 @@ public class CollectionUtil {
 
     @SafeVarargs
     public static <T> Set<T> hashSet(final T... from) {
-        final Set<T> to = new ReferenceOpenHashSet<>(from.length);
+        final Set<T> to = new HashSet<>(from.length);
 
         for (final T element : from) {
             to.add(element);
@@ -75,7 +75,7 @@ public class CollectionUtil {
     }
 
     public static <K, V> Map<K, V> hashMap(final K key, final V value) {
-        final Map<K, V> to = new Reference2ReferenceOpenHashMap<>(1);
+        final Map<K, V> to = new HashMap<>(1);
 
         to.put(key, value);
 
@@ -84,7 +84,7 @@ public class CollectionUtil {
 
     @SafeVarargs
     public static <K, V> Map<K, V> hashMap(final K[] keys, final V... values) {
-        final Map<K, V> to = new Reference2ReferenceOpenHashMap<>(keys.length, 1);
+        final Map<K, V> to = new HashMap<>(keys.length, 1);
 
         return hashMap(to, keys, values);
     }

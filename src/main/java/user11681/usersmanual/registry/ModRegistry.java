@@ -1,6 +1,6 @@
 package user11681.usersmanual.registry;
 
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -10,13 +10,17 @@ public class ModRegistry<T extends RegistryEntry> implements Iterable<T> {
     protected final Map<Identifier, T> entries;
 
     public ModRegistry() {
-        this.entries = new Reference2ReferenceOpenHashMap<>();
+        this.entries = new HashMap<>();
     }
 
     public T register(final T entry) {
         this.entries.put(entry.getIdentifier(), entry);
 
         return entry;
+    }
+
+    public T get(final String identifier) {
+        return this.get(new Identifier(identifier));
     }
 
     public T get(final Identifier identifier) {

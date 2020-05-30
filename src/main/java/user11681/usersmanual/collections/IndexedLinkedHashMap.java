@@ -1,14 +1,13 @@
 package user11681.usersmanual.collections;
 
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceLinkedOpenHashMap;
-
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 @Deprecated
-public class IndexedLinkedHashMap<K, V> extends Reference2ReferenceLinkedOpenHashMap<K, V> implements IndexedMap<K, V> {
+public class IndexedLinkedHashMap<K, V> extends HashMap<K, V> implements IndexedMap<K, V> {
     public IndexedLinkedHashMap() {
         super();
     }
