@@ -12,11 +12,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import user11681.usersmanual.duck.entity.EntityDuck;
+import user11681.usersmanual.duck.entity.BossEntityDuck;
 import user11681.usersmanual.reflect.ReflectUtil;
 
 @Mixin(Entity.class)
-public class EntityMixin implements EntityDuck {
+public class EntityMixin implements BossEntityDuck {
     private static final Map<Class<? extends Entity>, Boolean> REGISTRY = new HashMap<>();
 
     @Inject(method = "<init>", at = @At("TAIL"))

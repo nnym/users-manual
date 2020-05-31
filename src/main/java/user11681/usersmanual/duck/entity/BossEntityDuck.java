@@ -1,6 +1,6 @@
 package user11681.usersmanual.duck.entity;
 
-public interface EntityDuck {
+public interface BossEntityDuck {
     boolean isBoss();
 
     void setBoss(boolean boss);
