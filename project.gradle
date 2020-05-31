@@ -2,4 +2,5 @@ version = "0.1.0"
 
 dependencies {
     modApi(include("net.auoeke:romeral:+"))
+    modImplementation "${project.modmenu}"
 }

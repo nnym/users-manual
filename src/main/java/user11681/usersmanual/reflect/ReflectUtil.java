@@ -1,11 +1,13 @@
 package user11681.usersmanual.reflect;
 
-import user11681.usersmanual.Main;
-
-import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.annotation.Nonnull;
+import user11681.usersmanual.Main;
 
 @SuppressWarnings({"unchecked", "ConstantConditions"})
 public class ReflectUtil {
@@ -83,5 +85,16 @@ public class ReflectUtil {
         } catch (final NoSuchFieldException exception) {
             return getLowestField(clazz.getSuperclass(), fieldName);
         }
+    }
+
+    public static List<Field> getAllFields(final Class<?> clazz) {
+        final List<Field> fields = new ArrayList<>(Arrays.asList(clazz.getDeclaredFields()));
+        final Class<?> superclass = clazz.getSuperclass();
+
+        if (superclass != null) {
+            fields.addAll(getAllFields(superclass));
+        }
+
+        return fields;
     }
 }

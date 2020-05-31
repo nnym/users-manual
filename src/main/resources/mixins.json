@@ -1,0 +1,11 @@
+{
+    "required": true,
+    "package": "user11681.usersmanual.mixin",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+        "entity.EntityMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
