@@ -11,12 +11,24 @@ import java.util.Set;
 @SuppressWarnings({"UseBulkOperation", "ManualArrayToCollectionCopy"})
 public class CollectionUtil {
     @SafeVarargs
-    public static <T extends Collection<U>, U> T merge(final T... from) {
-        for (int i = 1; i < from.length; i++) {
-            from[0].addAll(from[i]);
+    public static <T, U extends Collection<T>> List<T> merge(final U... from) {
+        final List<T> to = new ArrayList<>();
+
+        for (final U collection : from) {
+            to.addAll(collection);
         }
 
-        return from[0];
+        return to;
+    }
+
+    public static <T, U extends Collection<T>> List<T> merge(final List<U> from) {
+        final List<T> to = new ArrayList<>();
+
+        for (U collection : from) {
+            to.addAll(collection);
+        }
+
+        return to;
     }
 
     @SafeVarargs

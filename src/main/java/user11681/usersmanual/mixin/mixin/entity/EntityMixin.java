@@ -1,4 +1,4 @@
-package user11681.usersmanual.mixin.entity;
+package user11681.usersmanual.mixin.mixin.entity;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import user11681.usersmanual.duck.entity.BossEntityDuck;
 import user11681.usersmanual.reflect.ReflectUtil;
 
 @Mixin(Entity.class)
-public class EntityMixin implements BossEntityDuck {
+public abstract class EntityMixin implements BossEntityDuck {
     private static final Map<Class<? extends Entity>, Boolean> REGISTRY = new HashMap<>();
 
     @Inject(method = "<init>", at = @At("TAIL"))

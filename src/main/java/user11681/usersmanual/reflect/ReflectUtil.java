@@ -3,11 +3,10 @@ package user11681.usersmanual.reflect;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
 import user11681.usersmanual.Main;
+import user11681.usersmanual.collections.CollectionUtil;
 
 @SuppressWarnings({"unchecked", "ConstantConditions"})
 public class ReflectUtil {
@@ -88,7 +87,7 @@ public class ReflectUtil {
     }
 
     public static List<Field> getAllFields(final Class<?> clazz) {
-        final List<Field> fields = new ArrayList<>(Arrays.asList(clazz.getDeclaredFields()));
+        final List<Field> fields = CollectionUtil.arrayList(clazz.getDeclaredFields());
         final Class<?> superclass = clazz.getSuperclass();
 
         if (superclass != null) {

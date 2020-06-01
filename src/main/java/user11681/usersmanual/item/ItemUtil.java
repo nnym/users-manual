@@ -1,28 +1,23 @@
 package user11681.usersmanual.item;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.EquipmentSlot;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DefaultedList;
 import user11681.usersmanual.collections.CollectionUtil;
-
-import java.util.Arrays;
-import java.util.List;
+import user11681.usersmanual.mixin.duck.CombinedInventoryDuck;
 
 public class ItemUtil {
-    public static List<List<ItemStack>> getCombinedInventory(final PlayerEntity player) {
-        final PlayerInventory inventory = player.inventory;
-
-        return Arrays.asList(inventory.main, inventory.offHand, inventory.armor);
+    public static List<ItemStack> getCombinedSingleInventory(final PlayerEntity player) {
+        return CollectionUtil.merge(getCombinedInventory(player));
     }
 
-    public static List<ItemStack> getCombinedSingleInventory(final PlayerEntity player) {
-        final PlayerInventory inventory = player.inventory;
-
-        return CollectionUtil.merge(inventory.main, inventory.offHand, inventory.armor);
+    public static List<DefaultedList<ItemStack>> getCombinedInventory(final PlayerEntity player) {
+        return ((CombinedInventoryDuck) player.inventory).getCombinedInventory();
     }
 
     public static boolean hasItem(final Item item, final PlayerEntity player) {
@@ -36,25 +31,8 @@ public class ItemUtil {
     }
 
     public static ItemStack getEquippedItemStack(final PlayerEntity player, final Item... validItems) {
-        final ItemStack mainhandStack = player.getMainHandStack();
-        final List<Item> itemList = Arrays.asList(validItems);
-
-        if (itemList.contains(mainhandStack.getItem())) {
-            return mainhandStack;
-        }
-
-        final ItemStack offhandStack = player.getOffHandStack();
-
-        if (itemList.contains(offhandStack.getItem())) {
-            return offhandStack;
-        }
-
-        return null;
-    }
-
-    public static ItemStack getEquippedItemStack(final PlayerInventory inventory, final Class<?> cls) {
-        for (final ItemStack itemStack : Arrays.asList(inventory.getMainHandStack(), inventory.offHand.get(0))) {
-            if (cls.isInstance(itemStack.getItem())) {
+        for (final ItemStack itemStack : player.getItemsHand()) {
+            if (Arrays.asList(validItems).contains(itemStack.getItem())) {
                 return itemStack;
             }
         }
@@ -62,8 +40,17 @@ public class ItemUtil {
         return null;
     }
 
-    public static ItemStack getRequiredItemStack(final PlayerEntity player, final EquipmentSlot slot,
-                                                 final Class<?>... classes) {
+    public static ItemStack getEquippedItemStack(final PlayerInventory inventory, final Class<?> clazz) {
+        for (final ItemStack itemStack : Arrays.asList(inventory.getMainHandStack(), inventory.offHand.get(0))) {
+            if (clazz.isInstance(itemStack.getItem())) {
+                return itemStack;
+            }
+        }
+
+        return null;
+    }
+
+    public static ItemStack getRequiredItemStack(final PlayerEntity player, final Class<?>... classes) {
         final ItemStack itemStack = player.getMainHandStack();
         final Item item = itemStack.getItem();
 
@@ -78,7 +65,7 @@ public class ItemUtil {
 
     public static boolean hasItem(final PlayerEntity player, final Item item, final int min, final int max) {
         final PlayerInventory inventory = player.inventory;
-        final DefaultedList<ItemStack> merged = CollectionUtil.merge(inventory.main, inventory.offHand);
+        final List<ItemStack> merged = CollectionUtil.merge(inventory.main, inventory.offHand);
 
         for (int i = min; i < max; i++) {
             final ItemStack itemStack = merged.get(i);
