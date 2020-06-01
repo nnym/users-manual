@@ -88,12 +88,10 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
     @Override
     public int indexOfKey(final Object target) {
         final K[] keys = this.keys;
-        int index;
+        int index = 0;
 
-        for (index = 0, length = this.size; index < length; index++) {
-            final K key = keys[index];
-
-            if (key.equals(target)) {
+        for (int size = this.size; index < size; index++) {
+            if (keys[index].equals(target)) {
                 return index;
             }
         }
@@ -104,9 +102,9 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
     @Override
     public int indexOfValue(final Object target) {
         final V[] values = this.values;
-        int index;
+        int index = 0;
 
-        for (index = 0, length = this.size; index < length; index++) {
+        for (int size = this.size; index < size; index++) {
             if (values[index].equals(target)) {
                 return index;
             }
@@ -117,28 +115,30 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
 
     public int lastIndexOfKey(final Object target) {
         final K[] keys = this.keys;
-        int index = -1;
+        final int size = this.size;
+        int index = -size - 1;
 
-        for (int i = 0, length = this.size; i < length; i++) {
+        for (int i = 0; i < size; i++) {
             if (keys[i].equals(target)) {
                 index = i;
             }
         }
 
-        return index == -1 ? -this.size - 1 : index;
+        return index;
     }
 
     @Override
     public int lastIndexOfValue(final Object target) {
         final V[] values = this.values;
-        int index = -1;
+        final int size = this.size;
+        int index = -size - 1;
 
-        for (int i = 0, length = this.size; i < length; i++) {
+        for (int i = 0; i < size; i++) {
             if (values[i].equals(target)) {
                 index = i;
             }
         }
 
-        return index == -1 ? -this.size -1 : index;
+        return index;
     }
 }

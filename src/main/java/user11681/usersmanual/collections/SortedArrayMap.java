@@ -170,22 +170,20 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
     @Override
     public int indexOfValue(final Object target) {
         final V[] values = this.values;
+        final int size = this.size;
 
-        int i = 0;
-
-        for (int size = this.size; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             if (values[i].equals(target)) {
                 return i;
             }
         }
 
-        return -this.size - 1;
+        return -size - 1;
     }
 
     @Override
     public int lastIndexOfValue(final Object target) {
         final V[] values = this.values;
-
         final int size = this.size;
         int index = -size - 1;
 
