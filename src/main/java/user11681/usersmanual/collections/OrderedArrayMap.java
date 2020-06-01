@@ -5,6 +5,18 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
+    public OrderedArrayMap() {
+        super();
+    }
+
+    public OrderedArrayMap(final int initialLength) {
+        super(initialLength);
+    }
+
+    public OrderedArrayMap(final Map<K, V> map) {
+        super(map);
+    }
+
     @Override
     public void putAll(@Nonnull final Map<? extends K, ? extends V> map) {
         final int size = this.size;

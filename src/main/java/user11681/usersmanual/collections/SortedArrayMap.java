@@ -14,7 +14,7 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         super(initialLength);
     }
 
-    public SortedArrayMap(final ArrayMap<K, V> from) {
+    public SortedArrayMap(final Map<K, V> from) {
         super(from);
     }
 
