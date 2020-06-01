@@ -5,4 +5,9 @@ public class ArrayUtil {
     public static <T> T[] comparable(final int length) {
         return (T[]) new Comparable[length];
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] create(final int length) {
+        return (T[]) new Object[length];
+    }
 }

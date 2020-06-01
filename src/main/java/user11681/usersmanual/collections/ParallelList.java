@@ -5,9 +5,12 @@ import com.google.common.annotations.VisibleForTesting;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
+import user11681.usersmanual.util.MeaningfulString;
 
 @VisibleForTesting
 public interface ParallelList<K, V> extends Iterable<K>, MeaningfulString {
+    int length();
+
     @Nonnull
     List<K> keyList();
 
@@ -29,6 +32,8 @@ public interface ParallelList<K, V> extends Iterable<K>, MeaningfulString {
     int indexOfLastKey(K target);
 
     int indexOfLastValue(V target);
+
+    void resize(int newLength);
 
     int size();
 

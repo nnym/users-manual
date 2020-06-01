@@ -1,4 +1,4 @@
-package user11681.usersmanual.collections;
+package user11681.usersmanual.util;
 
 public interface MeaningfulString {
     String asString();
