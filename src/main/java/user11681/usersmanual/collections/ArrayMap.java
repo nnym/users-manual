@@ -153,8 +153,8 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
     }
 
     protected void shift(final int shift, final int start, final int end) {
-        System.arraycopy(this.keys, start, this.keys, start + shift, start - end);
-        System.arraycopy(this.values, start, this.values, start + shift, start - end);
+        System.arraycopy(this.keys, start, this.keys, start + shift, end - start);
+        System.arraycopy(this.values, start, this.values, start + shift, end - start);
     }
 
     public boolean isEmpty() {
