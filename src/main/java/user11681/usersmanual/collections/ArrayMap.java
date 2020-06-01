@@ -32,6 +32,23 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         this.putAll(from);
     }
 
+    @SafeVarargs
+    public ArrayMap(final V defaultValue, final K... keys) {
+        this();
+
+        for (final K key : keys) {
+            this.put(key, defaultValue);
+        }
+    }
+
+    public ArrayMap(final V defaultValue, final Iterable<K> keys) {
+        this();
+
+        for (final K key : keys) {
+            this.put(key, defaultValue);
+        }
+    }
+
     public abstract int indexOfKey(Object target);
 
     public abstract int indexOfValue(Object target);

@@ -18,6 +18,15 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         super(from);
     }
 
+    @SafeVarargs
+    public SortedArrayMap(final V defaultValue, final K... keys) {
+        super(defaultValue, keys);
+    }
+
+    public SortedArrayMap(final V defaultValue, final Iterable<K> keys) {
+        super(defaultValue, keys);
+    }
+
     public void putAll(final Map<? extends K, ? extends V> map) {
         final Iterator<? extends K> keys = map.keySet().iterator();
         final Iterator<? extends V> values = map.values().iterator();

@@ -17,6 +17,15 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
         super(map);
     }
 
+    @SafeVarargs
+    public OrderedArrayMap(final V defaultValue, final K... keys) {
+        super(defaultValue, keys);
+    }
+
+    public OrderedArrayMap(final V defaultValue, final Iterable<K> keys) {
+        super(defaultValue, keys);
+    }
+
     @Override
     public void putAll(@Nonnull final Map<? extends K, ? extends V> map) {
         final int size = this.size;
