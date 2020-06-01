@@ -346,7 +346,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
         public E next() {
             final int index = this.index;
 
-            if (index >= size) {
+            if (index >= ArraySet.this.size) {
                 throw new NoSuchElementException();
             }
 
@@ -354,9 +354,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
                 throw new ConcurrentModificationException();
             }
 
-            ++this.index;
-
-            return ArraySet.this.elements[lastReturned = index];
+            return ArraySet.this.elements[lastReturned = ++this.index];
         }
 
         @Override
@@ -387,7 +385,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
                 }
 
                 while (index != size) {
-                    action.accept(elements[index++]);
+                    action.accept(ArraySet.this.elements[index++]);
                 }
 
                 this.index = index;

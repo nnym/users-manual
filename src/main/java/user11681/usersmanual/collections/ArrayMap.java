@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import user11681.usersmanual.util.Stringified;
 
@@ -202,31 +205,62 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
     }
 
     protected class ArrayMapIterator implements Iterator<K> {
-        public int cursor = 0;
-        public int returned = -1;
+        public int index = 0;
+        public int lastReturned = -1;
 
         @Override
         public boolean hasNext() {
-            return this.cursor < size;
+            return this.index < ArrayMap.this.size;
         }
 
         @Override
         public K next() {
-            return keys[this.cursor++];
+            final int index = this.index;
+
+            if (index >= ArrayMap.this.size) {
+                throw new NoSuchElementException();
+            }
+
+            if (index >= ArrayMap.this.length) {
+                throw new ConcurrentModificationException();
+            }
+
+            return ArrayMap.this.keys[lastReturned = ++this.index];
         }
 
         @Override
         public void remove() {
-            if (this.returned < 0) {
+            if (this.lastReturned < 0) {
                 throw new IllegalStateException();
             }
 
             try {
-                ArrayMap.this.remove(this.returned);
-                this.cursor = this.returned;
-                this.returned = -1;
+                ArrayMap.this.remove(this.lastReturned);
+                this.index = this.lastReturned;
+                this.lastReturned = -1;
             } catch (final IndexOutOfBoundsException exception) {
                 throw new ConcurrentModificationException();
+            }
+        }
+
+        @Override
+        public void forEachRemaining(final Consumer<? super K> action) {
+            Objects.requireNonNull(action);
+
+            final int size = ArrayMap.this.size;
+            int index = this.index;
+
+            if (index < size) {
+                if (index >= length) {
+                    throw new ConcurrentModificationException();
+                }
+
+                while (index != size) {
+                    action.accept(ArrayMap.this.getKey(index++));
+                }
+
+                this.index = index;
+                this.lastReturned = index - 1;
             }
         }
     }
