@@ -48,11 +48,10 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
 
     @Override
     public boolean addAll(final int index, @Nonnull final Collection<? extends E> collection) {
-        final int size = this.size;
         boolean changed = false;
 
-        if (size + collection.size() >= this.length) {
-            this.resize(size * 2);
+        while (this.size + collection.size() >= this.length) {
+            this.expand();
         }
 
         for (final E element : collection) {
@@ -78,33 +77,30 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
     @Override
     public boolean add(final E element) {
         final boolean contains = this.contains(element);
-        final int size = this.size;
 
-        if (size == this.length) {
-            this.resize(size * 2);
-        }
-
-        this.add(size, element);
+        this.add(this.size, element);
 
         return !contains;
     }
 
     @Override
     public void add(final int index, final E element) {
-        if (index > this.size) {
+        int size = this.size;
+
+        if (index > size) {
             throw new IndexOutOfBoundsException("" + index);
         }
 
         if (!this.contains(element)) {
-            int size = this.size;
-
             final E[] elements = this.elements;
 
             if (index < size) {
                 System.arraycopy(elements, index, elements, index + 1, size - index);
+            } else if (size == this.length) {
+                this.expand();
             }
 
-            this.elements[index] = element;
+            elements[index] = element;
 
             ++this.size;
         }
@@ -112,6 +108,10 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
 
     public void trimToSize() {
         this.resize(this.size);
+    }
+
+    public void expand() {
+        this.resize(this.size * 2);
     }
 
     public void resize(final int length) {

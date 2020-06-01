@@ -114,4 +114,12 @@ public class MathUtil {
     public static double log(final double base, final double power) {
         return Math.log(power) / Math.log(base);
     }
+
+    public static int nextLog(final double base, final double power) {
+        return ceil(log(base, power));
+    }
+
+    public static int pow(final int base, final int exponent) {
+        return (int) Math.pow(base, exponent);
+    }
 }
