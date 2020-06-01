@@ -20,16 +20,6 @@ public class ItemUtil {
         return ((CombinedInventoryDuck) player.inventory).getCombinedInventory();
     }
 
-    public static boolean hasItem(final Item item, final PlayerEntity player) {
-        for (final ItemStack itemStack : player.inventory.main) {
-            if (itemStack.getItem() == item) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static ItemStack getEquippedItemStack(final PlayerEntity player, final Item... validItems) {
         for (final ItemStack itemStack : player.getItemsHand()) {
             if (Arrays.asList(validItems).contains(itemStack.getItem())) {
@@ -63,15 +53,38 @@ public class ItemUtil {
         return null;
     }
 
+    public static boolean hasItem(final Item item, final PlayerEntity player) {
+        for (final ItemStack itemStack : player.inventory.main) {
+            if (itemStack.getItem() == item) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static boolean hasItem(final PlayerEntity player, final Item item, final int min, final int max) {
-        final PlayerInventory inventory = player.inventory;
-        final List<ItemStack> merged = CollectionUtil.merge(inventory.main, inventory.offHand);
+        final List<ItemStack> merged = getCombinedSingleInventory(player);
 
         for (int i = min; i < max; i++) {
             final ItemStack itemStack = merged.get(i);
 
             if (itemStack.getItem() == item) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean hasItem(final PlayerEntity player, final Class<?>... classes) {
+        final List<ItemStack> merged = getCombinedSingleInventory(player);
+
+        for (final ItemStack itemStack : merged) {
+            for (final Class<?> clazz : classes) {
+                if (clazz.isInstance(itemStack.getItem())) {
+                    return true;
+                }
             }
         }
 
