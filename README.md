@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/user11681/usersmanual/1.15.2/src/main/resources/assets/usersmanual/logo.png" width="20%"></img>
+<img src="https://raw.githubusercontent.com/user11681/usersmanual/1.15.2/src/main/resources/assets/usersmanual/icon.png" width="20%"></img>
 
 # usersmanual
 a library used by my mods
