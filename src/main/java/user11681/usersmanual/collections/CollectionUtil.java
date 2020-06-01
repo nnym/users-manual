@@ -110,14 +110,6 @@ public class CollectionUtil {
         return original;
     }
 
-    public static <K, V> IndexedMap<K, V> indexedLinkedHashMap(final K key, final V value) {
-        final IndexedMap<K, V> to = new IndexedLinkedHashMap<>(1);
-
-        to.put(key, value);
-
-        return to;
-    }
-
     @SafeVarargs
     public static <T> void addAll(final Collection<T> collection, final T... elements) {
         for (final T element : elements) {

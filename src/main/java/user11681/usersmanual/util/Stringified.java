@@ -1,5 +1,5 @@
 package user11681.usersmanual.util;
 
-public interface MeaningfulString {
+public interface Stringified {
     String asString();
 }

@@ -1,15 +1,13 @@
 package user11681.usersmanual.collections;
 
-import com.google.common.annotations.VisibleForTesting;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import user11681.usersmanual.util.Stringified;
 
-@VisibleForTesting
-public abstract class ArrayMap<K, V> implements ParallelList<K, V> {
+public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringified {
     protected K[] keys;
     protected V[] values;
     protected int length;
@@ -25,81 +23,98 @@ public abstract class ArrayMap<K, V> implements ParallelList<K, V> {
         this.length = initialLength;
     }
 
-    public ArrayMap(final ParallelList<K, V> from) {
-        this.keys = ArrayUtil.create(from.length());
-        this.values = ArrayUtil.create(from.length());
+    public ArrayMap(final Map<K, V> from) {
+        final int size = from.size();
+
+        this.keys = ArrayUtil.create(size);
+        this.values = ArrayUtil.create(size);
+
+        this.putAll(from);
+    }
+
+    public abstract int indexOfKey(Object target);
+
+    public abstract int indexOfValue(Object target);
+
+    public abstract int lastIndexOfValue(Object target);
+
+    @Override
+    public boolean containsKey(Object key) {
+        return this.indexOfKey(key) > -1;
     }
 
     @Override
+    public boolean containsValue(Object value) {
+        return this.indexOfValue(value) > -1;
+    }
+
     public void trimToSize() {
         this.resize(this.size);
     }
 
-    @Override
     public void resize(final int newLength) {
         this.keys = Arrays.copyOf(this.keys, newLength);
         this.values = Arrays.copyOf(this.values, newLength);
         this.length = newLength;
     }
 
-    @Override
     public int size() {
         return this.size;
     }
 
-    @Override
     public int length() {
         return this.length;
     }
 
-    @Nonnull
     @Override
-    public List<K> keyList() {
-        return Arrays.asList(this.keys);
-    }
-
     @Nonnull
-    @Override
-    public List<V> valueList() {
-        return Arrays.asList(this.values);
+    public ArraySet<K> keySet() {
+        return new ArraySet<>(this.keys);
     }
 
     @Override
+    @Nonnull
+    public ArraySet<V> values() {
+        return new ArraySet<>(this.values);
+    }
+
     public K getKey(final int index) {
-        if (index > this.size) {
-            throw new IndexOutOfBoundsException();
+        if (index >= this.size) {
+            throw new IndexOutOfBoundsException("" + index);
         }
 
         return this.keys[index];
     }
 
-    @Override
-    public V getValue(final int index) {
-        if (index > this.size) {
-            throw new IndexOutOfBoundsException();
+    public V get(final int index) {
+        if (index >= this.size) {
+            throw new IndexOutOfBoundsException("" + index);
         }
 
         return this.values[index];
     }
 
-    public V getValue(final K key) {
-        return this.getValue(this.indexOfFirstKey(key));
+    public V get(final Object key) {
+        final int index = this.indexOfKey(key);
+
+        return index < 0 ? null : this.get(index);
     }
 
-    @Override
-    public void addAll(final Map<K, V> map) {
-        final Iterator<K> keys = map.keySet().iterator();
-        final Iterator<V> values = map.values().iterator();
+    public V remove(final Object target) {
+        final int index = this.indexOfKey(target);
 
-        while (keys.hasNext()) {
-            this.add(keys.next(), values.next());
-        }
-    }
-
-    @Override
-    public V remove(final int index) {
         if (index < -1 || index >= this.size) {
             return null;
+        }
+
+        return this.remove(index);
+    }
+
+    public V remove(final int index) {
+        final int size = this.size;
+
+        if (index >= size) {
+            throw new IndexOutOfBoundsException("" + index);
         }
 
         final V[] values = this.values;
@@ -107,37 +122,21 @@ public abstract class ArrayMap<K, V> implements ParallelList<K, V> {
 
         final V removed = values[index];
 
-        this.shift(-1, index, --this.size);
+        this.shift(-1, index + 1, size);
 
-        keys[this.size] = null;
-        values[this.size] = null;
+        keys[size] = null;
+        values[size] = null;
+
+        --this.size;
 
         return removed;
     }
 
-    @Override
-    public V remove(final K target) {
-        return this.remove(this.indexOfFirstKey(target));
-    }
-
     protected void shift(final int shift, final int start, final int end) {
-        final K[] keys = this.keys;
-        final V[] values = this.values;
-
-        if (shift > 0) {
-            for (int i = end; i > start; --i) {
-                keys[i] = keys[i - shift];
-                values[i] = values[i - shift];
-            }
-        } else if (shift < 0) {
-            for (int i = start; i < end; i++) {
-                keys[i] = keys[i - shift];
-                values[i] = values[i - shift];
-            }
-        }
+        System.arraycopy(this.keys, start, this.keys, start + shift, start - end);
+        System.arraycopy(this.values, start, this.values, start + shift, start - end);
     }
 
-    @Override
     public boolean isEmpty() {
         return this.size == 0;
     }
@@ -145,7 +144,6 @@ public abstract class ArrayMap<K, V> implements ParallelList<K, V> {
     @Override
     public String asString() {
         final StringBuilder builder = new StringBuilder("{");
-
         final K[] keys = this.keys;
         final V[] values = this.values;
 
@@ -157,21 +155,12 @@ public abstract class ArrayMap<K, V> implements ParallelList<K, V> {
             }
         }
 
-        builder.append("}");
-
-        return builder.toString();
+        return builder.append('}').toString();
     }
 
-    @Override
     public void clear() {
-        final K[] keys = this.keys;
-        final V[] values = this.values;
-
-        for (int i = 0, size = this.size; i < size; i++) {
-            keys[i] = null;
-            values[i] = null;
-        }
-
+        this.keys = ArrayUtil.create(this.length);
+        this.values = ArrayUtil.create(this.length);
         this.size = 0;
     }
 
@@ -179,6 +168,20 @@ public abstract class ArrayMap<K, V> implements ParallelList<K, V> {
     @Override
     public Iterator<K> iterator() {
         return new ArrayMapIterator();
+    }
+
+    @Override
+    @Nonnull
+    public ArraySet<Map.Entry<K, V>> entrySet() {
+        final ArraySet<Map.Entry<K, V>> entries = new ArraySet<>();
+        final K[] keys = this.keys;
+        final V[] values = this.values;
+
+        for (int i = 0, size = this.size; i < size; i++) {
+            entries.add(new Entry<>(keys[i], values[i]));
+        }
+
+        return entries;
     }
 
     protected class ArrayMapIterator implements Iterator<K> {
@@ -208,6 +211,43 @@ public abstract class ArrayMap<K, V> implements ParallelList<K, V> {
             } catch (final IndexOutOfBoundsException exception) {
                 throw new ConcurrentModificationException();
             }
+        }
+    }
+
+    public static class Entry<K, V> implements Map.Entry<K, V>, Stringified {
+        protected K key;
+        protected V value;
+
+        public Entry(final K key) {
+            this.key = key;
+        }
+
+        public Entry(final K key, final V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public K getKey() {
+            return this.key;
+        }
+
+        @Override
+        public V getValue() {
+            return this.value;
+        }
+
+        @Override
+        public V setValue(final V value) {
+            final V old = this.value;
+
+            this.value = value;
+            return old;
+        }
+
+        @Override
+        public String asString() {
+            return String.format("{%s: %s}", this.key, this.value);
         }
     }
 }

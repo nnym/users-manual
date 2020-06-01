@@ -1,26 +1,41 @@
 package user11681.usersmanual.collections;
 
 import com.google.common.annotations.VisibleForTesting;
+import java.util.Iterator;
+import java.util.Map;
 
 @VisibleForTesting
 public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> extends ArrayMap<K, V> {
+    public SortedArrayMap() {
+        super();
+    }
+
     public SortedArrayMap(final int initialLength) {
         super(initialLength);
     }
 
-    public SortedArrayMap(final ParallelList<K, V> from) {
+    public SortedArrayMap(final ArrayMap<K, V> from) {
         super(from);
     }
 
+    public void putAll(final Map<? extends K, ? extends V> map) {
+        final Iterator<? extends K> keys = map.keySet().iterator();
+        final Iterator<? extends V> values = map.values().iterator();
+
+        while (keys.hasNext()) {
+            this.put(keys.next(), values.next());
+        }
+    }
+
     @Override
-    public boolean add(final K key, final V value) {
+    public V put(final K key, final V value) {
         final int size = this.size;
 
         if (size == this.length) {
             this.resize(size * 2);
         }
 
-        int index = this.indexOfFirstKey(key);
+        int index = this.indexOfKey(key);
 
         if (index < 0) {
             index = -index - 1;
@@ -29,36 +44,61 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         this.size++;
 
         if (index < size) {
-            this.shift(1, index, size);
+            if (!key.equals(this.keys[index])) {
+                this.shift(1, index, size);
+            }
+
+            return this.values[index] = value;
         }
 
         this.keys[index] = key;
         this.values[index] = value;
 
-        return true;
+        return null;
     }
 
-    protected <T extends Comparable<T>> int binarySearchFirst(final T[] array, final T target) {
-        int first = 0;
-        int last = this.size - 1;
+    protected <T> int binarySearch(final T[] array, final Comparable<Object> target) {
+        int start = 0;
+        int end = this.size - 1;
 
-        while (first <= last) {
-            final int middle = (first + last) / 2;
-            final int previous = middle - 1;
-            final T middleElement = array[middle];
+        while (start <= end) {
+            final int middle = (start + end) / 2;
+            final int compare = target.compareTo(array[middle]);
 
-            if (target.compareTo(middleElement) <= 0) {
-                last = previous;
-            } else if (middle != 0 && target.compareTo(array[previous]) <= 0 && !middleElement.equals(target)) {
-                first = middle + 1;
+            if (compare < 0) {
+                end = middle - 1;
+            } else if (compare > 0) {
+                start = middle + 1;
             } else {
                 return middle;
             }
         }
 
-        return -first - 1;
+        return -start - 1;
     }
 
+    protected <T> int binarySearchFirst(final T[] array, final Comparable<Object> target) {
+        int start = 0;
+        int end = this.size - 1;
+
+        while (start <= end) {
+            final int middle = (start + end) / 2;
+            final int previous = middle - 1;
+            final T middleElement = array[middle];
+
+            if (target.compareTo(middleElement) <= 0) {
+                end = previous;
+            } else if (middle != 0 && target.compareTo(array[previous]) <= 0 && !middleElement.equals(target)) {
+                start = middle + 1;
+            } else {
+                return middle;
+            }
+        }
+
+        return -start - 1;
+    }
+
+/*
     protected <T extends Comparable<T>> int binarySearchLast(final T[] array, final T target) {
         final int end = this.size - 1;
         int first = 0;
@@ -80,6 +120,7 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
 
         return -first - 1;
     }
+*/
 
     protected void sort() {
         final int size = this.size;
@@ -98,12 +139,10 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
                 for (int l = i; l < end; l++) {
                     if (j < right && (k >= end || keys[j].compareTo(keys[k]) <= 0)) {
                         tempKeys[l] = keys[j];
-                        tempValues[l] = values[j];
-                        j++;
+                        tempValues[l] = values[j++];
                     } else {
                         tempKeys[l] = keys[k];
-                        tempValues[l] = values[k];
-                        k++;
+                        tempValues[l] = values[k++];
                     }
                 }
             }
@@ -114,32 +153,39 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
     }
 
     @Override
-    public int indexOfFirstKey(final K target) {
-        return this.binarySearchFirst(this.keys, target);
+    public int indexOfKey(final Object target) {
+        //noinspection unchecked
+        return target instanceof Comparable ? this.binarySearch(this.keys, (Comparable<Object>) target) : -1;
     }
 
     @Override
-    public int indexOfFirstValue(final V target) {
-        return this.binarySearchFirst(this.values, target);
+    public int indexOfValue(final Object target) {
+        final V[] values = this.values;
+
+        int i = 0;
+
+        for (int size = this.size; i < size; i++) {
+            if (values[i].equals(target)) {
+                return i;
+            }
+        }
+
+        return -this.size - 1;
     }
 
     @Override
-    public int indexOfLastKey(final K target) {
-        return this.binarySearchLast(this.keys, target);
-    }
+    public int lastIndexOfValue(final Object target) {
+        final V[] values = this.values;
 
-    @Override
-    public int indexOfLastValue(final V target) {
-        return this.binarySearchLast(this.values, target);
-    }
+        final int size = this.size;
+        int index = -size - 1;
 
-    @Override
-    public boolean containsKey(final K key) {
-        return this.indexOfFirstKey(key) > -1;
-    }
+        for (int i = 0; i < size; i++) {
+            if (values[i].equals(target)) {
+                index = i;
+            }
+        }
 
-    @Override
-    public boolean containsValue(final V value) {
-        return this.indexOfFirstValue(value) > -1;
+        return index;
     }
 }

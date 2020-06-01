@@ -1,28 +1,75 @@
 package user11681.usersmanual.collections;
 
-import com.google.common.annotations.VisibleForTesting;
+import java.util.Iterator;
+import java.util.Map;
+import javax.annotation.Nonnull;
 
-@VisibleForTesting
 public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
     @Override
-    public boolean add(final K key, final V value) {
+    public void putAll(@Nonnull final Map<? extends K, ? extends V> map) {
         final int size = this.size;
 
-        if (size == this.length) {
-            this.resize(2 * size);
+        if (size + map.size() >= this.length) {
+            this.resize(size * 2);
         }
 
-        this.keys[size] = key;
-        this.values[size] = value;
+        final Iterator<? extends K> keys = map.keySet().iterator();
+        final Iterator<? extends V> values = map.values().iterator();
 
-        return true;
+        while (keys.hasNext()) {
+            final K key = keys.next();
+
+            int index = this.indexOfKey(key);
+
+            if (index < 0) {
+                index = -index - 1;
+            }
+
+            ++this.size;
+
+            if (index < size) {
+                this.shift(1, index, size);
+            }
+
+            this.keys[index] = key;
+            this.values[index] = values.next();
+        }
     }
 
     @Override
-    public int indexOfFirstKey(final K target) {
-        final K[] keys = this.keys;
+    public V put(final K key, final V value) {
+        final int size = this.size;
 
-        for (int index = 0, length = keys.length; index < length; index++) {
+        if (size == this.length) {
+            this.resize(size * 2);
+        }
+
+        int index = this.indexOfKey(key);
+
+        if (index < 0) {
+            index = -index - 1;
+        }
+
+        ++this.size;
+
+        if (index < size) {
+            this.shift(1, index, size);
+        }
+
+        V previous = this.values[index];
+
+        this.keys[index] = key;
+        this.values[index] = value;
+
+        return previous;
+    }
+
+    @Override
+    public int indexOfKey(final Object target) {
+        final K[] keys = this.keys;
+        int index;
+
+        for (index = 0, length = this.size; index < length; index++) {
             final K key = keys[index];
 
             if (key.equals(target)) {
@@ -30,59 +77,47 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
             }
         }
 
-        return -1;
+        return -index - 1;
     }
 
     @Override
-    public int indexOfFirstValue(final V target) {
+    public int indexOfValue(final Object target) {
         final V[] values = this.values;
+        int index;
 
-        for (int i = 0, length = values.length; i < length; i++) {
-            if (values[i].equals(target)) {
-                return i;
+        for (index = 0, length = this.size; index < length; index++) {
+            if (values[index].equals(target)) {
+                return index;
             }
         }
 
-        return -1;
+        return -index - 1;
     }
 
-    @Override
-    public int indexOfLastKey(final K target) {
+    public int lastIndexOfKey(final Object target) {
         final K[] keys = this.keys;
-
         int index = -1;
 
-        for (int i = 0, length = keys.length; i < length; i++) {
+        for (int i = 0, length = this.size; i < length; i++) {
             if (keys[i].equals(target)) {
                 index = i;
             }
         }
 
-        return index;
+        return index == -1 ? -this.size - 1 : index;
     }
 
     @Override
-    public int indexOfLastValue(final V target) {
+    public int lastIndexOfValue(final Object target) {
         final V[] values = this.values;
-
         int index = -1;
 
-        for (int i = 0, length = values.length; i < length; i++) {
+        for (int i = 0, length = this.size; i < length; i++) {
             if (values[i].equals(target)) {
                 index = i;
             }
         }
 
-        return index;
-    }
-
-    @Override
-    public boolean containsKey(final K key) {
-        return this.indexOfFirstKey(key) > -1;
-    }
-
-    @Override
-    public boolean containsValue(final V value) {
-        return this.indexOfFirstValue(value) > -1;
+        return index == -1 ? -this.size -1 : index;
     }
 }

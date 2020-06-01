@@ -110,4 +110,8 @@ public class MathUtil {
     public static int roundRandomly(final double value, final Random random) {
         return random.nextDouble() < 0.5 ? (int) value : ceil(value);
     }
+
+    public static double log(final double base, final double power) {
+        return Math.log(power) / Math.log(base);
+    }
 }
