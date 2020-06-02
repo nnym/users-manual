@@ -2,28 +2,29 @@ package user11681.usersmanual.collections;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
+    public OrderedArrayMap(final Map<K, V> map) {
+        super(map);
+    }
+
+    public OrderedArrayMap(final Supplier<V> defaultValueSupplier, final Iterable<K> keys) {
+        super(defaultValueSupplier, keys);
+    }
+
+    @SafeVarargs
+    public OrderedArrayMap(final Supplier<V> defaultValueSupplier, final K... keys) {
+        super(defaultValueSupplier, keys);
+    }
+
     public OrderedArrayMap() {
         super();
     }
 
     public OrderedArrayMap(final int initialLength) {
         super(initialLength);
-    }
-
-    public OrderedArrayMap(final Map<K, V> map) {
-        super(map);
-    }
-
-    @SafeVarargs
-    public OrderedArrayMap(final V defaultValue, final K... keys) {
-        super(defaultValue, keys);
-    }
-
-    public OrderedArrayMap(final V defaultValue, final Iterable<K> keys) {
-        super(defaultValue, keys);
     }
 
     @Override

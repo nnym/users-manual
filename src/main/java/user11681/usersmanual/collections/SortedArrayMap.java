@@ -3,28 +3,29 @@ package user11681.usersmanual.collections;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @VisibleForTesting
 public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> extends ArrayMap<K, V> {
+    public SortedArrayMap(final Map<K, V> from) {
+        super(from);
+    }
+
+    public SortedArrayMap(final Supplier<V> defaultValueSupplier, final Iterable<K> keys) {
+        super(defaultValueSupplier, keys);
+    }
+
+    @SafeVarargs
+    public SortedArrayMap(final Supplier<V> defaultValueSupplier, final K... keys) {
+        super(defaultValueSupplier, keys);
+    }
+
     public SortedArrayMap() {
         super();
     }
 
     public SortedArrayMap(final int initialLength) {
         super(initialLength);
-    }
-
-    public SortedArrayMap(final Map<K, V> from) {
-        super(from);
-    }
-
-    @SafeVarargs
-    public SortedArrayMap(final V defaultValue, final K... keys) {
-        super(defaultValue, keys);
-    }
-
-    public SortedArrayMap(final V defaultValue, final Iterable<K> keys) {
-        super(defaultValue, keys);
     }
 
     public void putAll(final Map<? extends K, ? extends V> map) {

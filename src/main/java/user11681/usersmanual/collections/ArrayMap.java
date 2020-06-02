@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import user11681.usersmanual.util.Stringified;
 
@@ -15,16 +16,6 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
     protected V[] values;
     protected int length;
     protected int size;
-
-    public ArrayMap() {
-        this(10);
-    }
-
-    public ArrayMap(final int initialLength) {
-        this.keys = ArrayUtil.create(initialLength);
-        this.values = ArrayUtil.create(initialLength);
-        this.length = initialLength;
-    }
 
     public ArrayMap(final Map<K, V> from) {
         final int size = from.size();
@@ -35,21 +26,31 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         this.putAll(from);
     }
 
-    @SafeVarargs
-    public ArrayMap(final V defaultValue, final K... keys) {
+    public ArrayMap(final Supplier<V> valueSupplier, final Iterable<K> keys) {
         this();
 
         for (final K key : keys) {
-            this.put(key, defaultValue);
+            this.put(key, valueSupplier.get());
         }
     }
 
-    public ArrayMap(final V defaultValue, final Iterable<K> keys) {
+    @SafeVarargs
+    public ArrayMap(final Supplier<V> valueSupplier, final K... keys) {
         this();
 
         for (final K key : keys) {
-            this.put(key, defaultValue);
+            this.put(key, valueSupplier.get());
         }
+    }
+
+    public ArrayMap() {
+        this(10);
+    }
+
+    public ArrayMap(final int initialLength) {
+        this.keys = ArrayUtil.create(initialLength);
+        this.values = ArrayUtil.create(initialLength);
+        this.length = initialLength;
     }
 
     public abstract int indexOfKey(Object target);

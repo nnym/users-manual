@@ -4,7 +4,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import user11681.usersmanual.collections.ArraySet;
 
 public class Main implements ModInitializer {
     public static final String MOD_ID = "usersmanual";
@@ -16,6 +15,5 @@ public class Main implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.warn(new ArraySet<>(2, "c", "n", "a", "l").asString());
     }
 }
