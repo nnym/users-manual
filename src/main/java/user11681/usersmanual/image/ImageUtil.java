@@ -5,7 +5,6 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.Raster;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
 import net.fabricmc.api.EnvType;
@@ -57,10 +56,6 @@ public class ImageUtil {
         rgb[2] = color % 0xFF00 / 0xFF;
 
         return rgb;
-    }
-
-    public static ByteBuffer toByteBuffer(final Raster raster) {
-        return ByteBuffer.wrap(((DataBufferByte) raster.getDataBuffer()).getData());
     }
 
     public static ByteArrayInputStream toInputStream(final Raster raster) {
