@@ -362,7 +362,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
                 throw new ConcurrentModificationException();
             }
 
-            return ArraySet.this.elements[this.lastReturned = ++this.index];
+            return ArraySet.this.elements[this.lastReturned = this.index++];
         }
 
         @Override

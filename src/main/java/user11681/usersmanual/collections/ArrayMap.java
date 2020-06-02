@@ -225,7 +225,7 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
                 throw new ConcurrentModificationException();
             }
 
-            return ArrayMap.this.keys[lastReturned = ++this.index];
+            return ArrayMap.this.keys[lastReturned = this.index++];
         }
 
         @Override
