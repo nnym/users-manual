@@ -28,17 +28,17 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
         this.length = initialLength;
     }
 
-    public ArraySet(final Collection<E> from) {
-        this(from.toArray(ArrayUtil.create(from.size())));
+    public ArraySet(final int length, final Collection<E> from) {
+        this.elements = ArrayUtil.create(length);
+        //noinspection SuspiciousSystemArraycopy
+        System.arraycopy(from.toArray(), 0, elements, 0, length);
+        this.size = this.length = length;
     }
 
     @SafeVarargs
-    public ArraySet(final E... from) {
-        final int size = from.length;
-
-        this.elements = Arrays.copyOf(from, size);
-        this.length = size;
-        this.size = size;
+    public ArraySet(final int length, final E... from) {
+        this.elements = Arrays.copyOf(from, length);
+        this.size = this.length = length;
     }
 
     @Override
@@ -216,7 +216,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
     @Override
     @Nonnull
     public List<E> subList(final int from, final int to) {
-        return new ArraySet<>(Arrays.copyOfRange(this.elements, from, to));
+        return new ArraySet<>(to - from, Arrays.copyOfRange(this.elements, from, to));
     }
 
     @Override
@@ -231,6 +231,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
 
     @Override
     public boolean contains(final Object object) {
+        //noinspection ListIndexOfReplaceableByContains
         return this.indexOf(object) > -1;
     }
 

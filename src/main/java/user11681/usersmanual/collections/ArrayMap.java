@@ -89,13 +89,13 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
     @Override
     @Nonnull
     public ArraySet<K> keySet() {
-        return new ArraySet<>(this.keys);
+        return new ArraySet<>(this.size, this.keys);
     }
 
     @Override
     @Nonnull
     public ArraySet<V> values() {
-        return new ArraySet<>(this.values);
+        return new ArraySet<>(this.size, this.values);
     }
 
     public K getKey(final int index) {
