@@ -112,11 +112,15 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
     }
 
     public void expand() {
-        this.elements = Arrays.copyOf(this.elements, this.size * 2);
+        final int length = this.size * 2;
+
+        this.elements = Arrays.copyOf(this.elements, length);
+        this.length = length;
     }
 
     public void resize(final int length) {
         this.elements = Arrays.copyOf(this.elements, length);
+        this.length = length;
     }
 
     @Override
