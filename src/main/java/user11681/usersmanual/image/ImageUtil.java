@@ -1,5 +1,13 @@
 package user11681.usersmanual.image;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import javax.annotation.Nonnull;
+import javax.imageio.ImageIO;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -7,14 +15,6 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import user11681.usersmanual.Main;
-
-import javax.annotation.Nonnull;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 @SuppressWarnings("ConstantConditions")
 @Environment(EnvType.CLIENT)
@@ -59,6 +59,10 @@ public class ImageUtil {
         return rgb;
     }
 
+    public static ByteBuffer toByteBuffer(final Raster raster) {
+        return ByteBuffer.wrap(((DataBufferByte) raster.getDataBuffer()).getData());
+    }
+
     public static ByteArrayInputStream toInputStream(final Raster raster) {
         return new ByteArrayInputStream(((DataBufferByte) raster.getDataBuffer()).getData());
     }
@@ -66,8 +70,8 @@ public class ImageUtil {
     public static NativeImage toNativeImage(final Raster raster) {
         try {
             return NativeImage.read(toInputStream(raster));
-        } catch (IOException exception) {
-            Main.LOGGER.error(exception);
+        } catch (final IOException exception) {
+            Main.LOGGER.error("An error occurred while attempting to read an image:", exception);
         }
 
         return null;
