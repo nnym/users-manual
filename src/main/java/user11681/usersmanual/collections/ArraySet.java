@@ -108,7 +108,10 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
     }
 
     public void trimToSize() {
-        this.resize(this.size);
+        final int size = this.size;
+
+        this.resize(size);
+        this.length = size;
     }
 
     public void expand() {
