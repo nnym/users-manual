@@ -92,12 +92,13 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
         }
 
         if (!this.contains(element)) {
-            final E[] elements = this.elements;
+            E[] elements = this.elements;
 
             if (index < size) {
                 System.arraycopy(elements, index, elements, index + 1, size - index);
             } else if (size == this.length) {
                 this.expand();
+                elements = this.elements;
             }
 
             elements[index] = element;
@@ -111,7 +112,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
     }
 
     public void expand() {
-        this.resize(this.size * 2);
+        this.elements = Arrays.copyOf(this.elements, this.size * 2);
     }
 
     public void resize(final int length) {
