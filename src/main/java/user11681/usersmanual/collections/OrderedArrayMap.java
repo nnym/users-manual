@@ -68,19 +68,17 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
 
         int index = this.indexOfKey(key);
 
+        final V previous;
+
         if (index < 0) {
-            index = -index - 1;
+            index = size;
+            ++this.size;
+            previous = null;
+            this.keys[index] = key;
+        } else {
+            previous = this.values[index];
         }
 
-        ++this.size;
-
-        if (index < size) {
-            this.shift(1, index, size);
-        }
-
-        V previous = this.values[index];
-
-        this.keys[index] = key;
         this.values[index] = value;
 
         return previous;
@@ -89,15 +87,15 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
     @Override
     public int indexOfKey(final Object target) {
         final K[] keys = this.keys;
-        int index = 0;
+        final int size = this.size;
 
-        for (int size = this.size; index < size; index++) {
+        for (int index = 0; index < size; index++) {
             if (keys[index].equals(target)) {
                 return index;
             }
         }
 
-        return -index - 1;
+        return -size - 1;
     }
 
     @Override

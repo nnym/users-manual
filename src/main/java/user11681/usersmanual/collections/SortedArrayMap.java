@@ -49,20 +49,21 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
 
         if (index < 0) {
             index = -index - 1;
-        }
 
-        this.size++;
-
-        if (index < size) {
-            if (!key.equals(this.keys[index])) {
+            if (index < size) {
                 this.shift(1, index, size);
             }
+        } else if (index < size) {
+            final V previous = this.values[index];
 
-            return this.values[index] = value;
+            this.values[index] = value;
+
+            return previous;
         }
 
         this.keys[index] = key;
         this.values[index] = value;
+        ++this.size;
 
         return null;
     }
