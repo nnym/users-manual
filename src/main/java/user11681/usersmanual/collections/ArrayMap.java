@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import user11681.usersmanual.util.Stringified;
@@ -121,6 +122,16 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         return index < 0 ? null : this.get(index);
     }
 
+    public void removeIf(final Predicate<K> predicate) {
+        final Iterator<K> iterator = this.iterator();
+
+        while (iterator.hasNext()) {
+            if (predicate.test(iterator.next())) {
+                iterator.remove();
+            }
+        }
+    }
+
     public V remove(final Object target) {
         final int index = this.indexOfKey(target);
 
@@ -226,7 +237,7 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
                 throw new ConcurrentModificationException();
             }
 
-            return ArrayMap.this.keys[lastReturned = this.index++];
+            return ArrayMap.this.keys[this.lastReturned = this.index++];
         }
 
         @Override
@@ -236,7 +247,10 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
             }
 
             try {
-                ArrayMap.this.remove(this.lastReturned);
+                final int returned = this.lastReturned;
+
+                ArrayMap.this.remove(returned);
+
                 this.index = this.lastReturned;
                 this.lastReturned = -1;
             } catch (final IndexOutOfBoundsException exception) {
