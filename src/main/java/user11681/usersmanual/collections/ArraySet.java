@@ -347,7 +347,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
 
         @Override
         public boolean hasNext() {
-            return this.index != size;
+            return this.index < ArraySet.this.size;
         }
 
         @Override
@@ -362,19 +362,21 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
                 throw new ConcurrentModificationException();
             }
 
-            return ArraySet.this.elements[lastReturned = ++this.index];
+            return ArraySet.this.elements[this.lastReturned = ++this.index];
         }
 
         @Override
         public void remove() {
-            if (this.lastReturned < 0) {
+            int lastReturned = this.lastReturned;
+
+            if (lastReturned < 0) {
                 throw new IllegalStateException();
             }
 
             try {
                 ArraySet.this.remove(lastReturned);
                 index = lastReturned;
-                lastReturned = -1;
+                this.lastReturned = -1;
             } catch (final IndexOutOfBoundsException exception) {
                 throw new ConcurrentModificationException();
             }
@@ -388,7 +390,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
             int index = this.index;
 
             if (index < size) {
-                if (index >= length) {
+                if (index >= ArraySet.this.length) {
                     throw new ConcurrentModificationException();
                 }
 
@@ -428,7 +430,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringified {
 
             this.index = previous;
 
-            return elements[this.lastReturned = previous];
+            return ArraySet.this.elements[this.lastReturned = previous];
         }
 
         @Override
