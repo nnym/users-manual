@@ -12,9 +12,9 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
-import user11681.usersmanual.util.Stringified;
+import user11681.usersmanual.util.Stringifiable;
 
-public class ArraySet<E> implements Set<E>, List<E>, Stringified {
+public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     E[] elements;
     int length;
     int size;

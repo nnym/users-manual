@@ -10,9 +10,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
-import user11681.usersmanual.util.Stringified;
+import user11681.usersmanual.util.Stringifiable;
 
-public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringified {
+public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringifiable {
     protected K[] keys;
     protected V[] values;
     protected int length;
@@ -280,7 +280,7 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         }
     }
 
-    public static class Entry<K, V> implements Map.Entry<K, V>, Stringified {
+    public static class Entry<K, V> implements Map.Entry<K, V>, Stringifiable {
         protected K key;
         protected V value;
 

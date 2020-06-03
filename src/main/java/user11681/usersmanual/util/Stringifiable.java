@@ -1,5 +1,5 @@
 package user11681.usersmanual.util;
 
-public interface Stringified {
+public interface Stringifiable {
     String asString();
 }
