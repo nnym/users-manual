@@ -13,7 +13,7 @@ public class ModRegistry<T extends RegistryEntry> implements Iterable<T> {
         this.entries = new HashMap<>();
     }
 
-    public T register(final T entry) {
+    public <U extends T> U register(final U entry) {
         this.entries.put(entry.getIdentifier(), entry);
 
         return entry;
