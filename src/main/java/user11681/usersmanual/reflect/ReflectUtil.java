@@ -19,6 +19,10 @@ public class ReflectUtil {
         return getFieldValue(object, getLowestField(clazz, fieldName));
     }
 
+    public static <T> T getFieldValue(final Field field) {
+        return getFieldValue(null, field);
+    }
+
     @Nonnull
     public static <T> T getFieldValue(final Object object, final Field field) {
         try {
