@@ -5,7 +5,7 @@ import net.minecraft.util.Identifier;
 public interface RegistryEntry {
     Identifier getIdentifier();
 
-    default String stringIdentifier() {
+    default String asString() {
         return this.getIdentifier().toString();
     }
 }
