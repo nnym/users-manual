@@ -3,8 +3,6 @@
     "package": "user11681.usersmanual.mixin.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-        "client.MinecraftClientMixin",
-        "client.resource.ResourceReloaderMixin",
         "entity.EntityMixin",
         "entity.player.PlayerInventoryMixin"
     ],
