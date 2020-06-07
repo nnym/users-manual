@@ -14,12 +14,6 @@
     "icon": "assets/usersmanual/icon.png",
     "environment": "*",
     "entrypoints": {
-        "main": [
-            "user11681.usersmanual.Main"
-        ],
-        "client": [
-            "user11681.usersmanual.MainClient"
-        ]
     },
     "mixins": [
         "usersmanual.mixins.json"

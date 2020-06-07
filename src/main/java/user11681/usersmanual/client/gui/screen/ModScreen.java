@@ -19,7 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import user11681.usersmanual.MainClient;
 
-public abstract class ExtendedScreen extends Screen {
+public abstract class ModScreen extends Screen {
     public static final ItemRenderer ITEM_RENDERER = MainClient.CLIENT.getItemRenderer();
     public static final ItemModels ITEM_MODELS = ITEM_RENDERER.getModels();
     public static final TextureManager TEXTURE_MANAGER = MainClient.CLIENT.getTextureManager();
@@ -27,7 +27,7 @@ public abstract class ExtendedScreen extends Screen {
     public static final ResourceManager RESOURCE_MANAGER = MainClient.CLIENT.getResourceManager();
     public static final Identifier GLINT = new Identifier("textures/misc/enchanted_item_glint.png");
 
-    protected ExtendedScreen(final Text title) {
+    protected ModScreen(final Text title) {
         super(title);
     }
 

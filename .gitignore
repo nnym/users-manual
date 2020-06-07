@@ -2,3 +2,5 @@
 !/.gitignore
 
 build
+out
+run

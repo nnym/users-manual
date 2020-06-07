@@ -12,7 +12,7 @@ import user11681.usersmanual.MainClient;
 import user11681.usersmanual.client.gui.widget.ExtendedButtonWidget;
 
 @Environment(EnvType.CLIENT)
-public abstract class ScreenTab extends ExtendedScreen {
+public abstract class ScreenTab extends ModScreen {
     protected final List<ScreenTab> tabs;
     protected final List<ExtendedButtonWidget> tabButtons;
     protected final int index;
