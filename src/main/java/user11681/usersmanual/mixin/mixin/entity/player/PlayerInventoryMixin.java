@@ -3,7 +3,7 @@ package user11681.usersmanual.mixin.mixin.entity.player;
 import java.util.List;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import user11681.usersmanual.mixin.duck.inventory.CombinedInventoryDuck;

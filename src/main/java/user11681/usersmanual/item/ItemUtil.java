@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.util.collection.DefaultedList;
 import user11681.usersmanual.collections.CollectionUtil;
 import user11681.usersmanual.mixin.duck.inventory.CombinedInventoryDuck;
 
@@ -93,7 +93,7 @@ public class ItemUtil {
 
     public static int getSlotFor(final PlayerInventory inventory, final ItemStack itemStack) {
         for (int i = 0; i < inventory.main.size(); ++i) {
-            if (!inventory.main.get(i).isEmpty() && ItemStack.areEqualIgnoreDamage(itemStack, inventory.main.get(i))) {
+            if (!inventory.main.get(i).isEmpty() && ItemStack.areItemsEqualIgnoreDamage(itemStack, inventory.main.get(i))) {
                 return i;
             }
         }

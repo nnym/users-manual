@@ -9,6 +9,6 @@ public class StringifiedText extends TranslatableText {
 
     @Override
     public String toString() {
-        return this.asFormattedString();
+        return this.asString();
     }
 }

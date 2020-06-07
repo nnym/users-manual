@@ -3,8 +3,6 @@ package user11681.usersmanual.client.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
@@ -12,10 +10,9 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.item.ItemModels;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.texture.TextureManager;
-import net.minecraft.item.Item;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.text.Text;
@@ -36,7 +33,7 @@ public abstract class ExtendedScreen extends Screen {
 
     @Override
     public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
-        if (scanCode == MainClient.CLIENT.options.keyInventory.getDefaultKeyCode().getKeyCode()) {
+        if (MainClient.CLIENT.options.keyInventory.matchesKey(keyCode, scanCode)) {
             this.onClose();
 
             return true;
@@ -45,22 +42,22 @@ public abstract class ExtendedScreen extends Screen {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    public void blitInterpolated(int x, int y, final int startU, final int startV, final int middleU,
-                                 final int middleV, final int endU, final int endV, final int finalU,
-                                 final int finalV, int width, int height) {
+    public void drawInterpolatedTexture(final MatrixStack stack, int x, int y, final int startU, final int startV, final int middleU,
+                                        final int middleV, final int endU, final int endV, final int finalU,
+                                        final int finalV, int width, int height) {
         final int leftWidth = middleU - startU;
         final int topHeight = middleV - startV;
 
-        this.blitHorizontallyInterpolated(x, y, startU, startV, middleU, endU, finalU, width, topHeight);
-        this.blitHorizontallyInterpolated(x, y + height - topHeight, startU, endV, middleU, endU, finalU, width, topHeight);
-        this.blitVerticallyInterpolated(x, y, startU, startV, middleV, endV, finalV, leftWidth, height);
-        this.blitVerticallyInterpolated(x + width - leftWidth, y, endU, startV, middleV, endV, finalV, leftWidth, height);
-        this.blitVerticallyInterpolated(x + leftWidth, y + topHeight, middleU, middleV, endV, width - 2 * leftWidth, height - 2 * topHeight);
+        this.drawHorizontallyInterpolatedTexture(stack, x, y, startU, startV, middleU, endU, finalU, width, topHeight);
+        this.drawHorizontallyInterpolatedTexture(stack, x, y + height - topHeight, startU, endV, middleU, endU, finalU, width, topHeight);
+        this.drawVerticallyInterpolatedTexture(stack, x, y, startU, startV, middleV, endV, finalV, leftWidth, height);
+        this.drawVerticallyInterpolatedTexture(stack, x + width - leftWidth, y, endU, startV, middleV, endV, finalV, leftWidth, height);
+        this.drawVerticallyInterpolatedTexture(stack, x + leftWidth, y + topHeight, middleU, middleV, endV, width - 2 * leftWidth, height - 2 * topHeight);
     }
 
-    public void blitHorizontallyInterpolated(int x, final int y, int startU, final int startV,
-                                             final int middleU, int endU, final int finalU, int width,
-                                             final int height) {
+    public void drawHorizontallyInterpolatedTexture(final MatrixStack stack, int x, final int y, int startU, final int startV,
+                                                    final int middleU, int endU, final int finalU, int width,
+                                                    final int height) {
         if (middleU < startU) {
             startU = middleU;
         }
@@ -68,21 +65,21 @@ public abstract class ExtendedScreen extends Screen {
         final int startWidth = middleU - startU;
         final int finalWidth = finalU - endU;
 
-        this.blit(x, y, startU, startV, startWidth, height);
+        this.drawTexture(stack, x, y, startU, startV, startWidth, height);
 
         width -= startWidth + finalWidth;
         x += startWidth;
-        x = this.blitHorizontallyInterpolated(x, y, startV, middleU, endU, width, height);
+        x = this.drawHorizontallyInterpolatedTexture(stack, x, y, startV, middleU, endU, width, height);
 
-        this.blit(x, y, endU, startV, finalWidth, height);
+        this.drawTexture(stack, x, y, endU, startV, finalWidth, height);
     }
 
-    public int blitHorizontallyInterpolated(int x, final int y, final int startV, final int middleU,
-                                            final int endU, int width, final int height) {
+    public int drawHorizontallyInterpolatedTexture(final MatrixStack stack, int x, final int y, final int startV, final int middleU,
+                                                   final int endU, int width, final int height) {
         while (width > 0) {
             final int middleWidth = Math.min(width, endU - middleU);
 
-            this.blit(x, y, middleU, startV, middleWidth, height);
+            this.drawTexture(stack, x, y, middleU, startV, middleWidth, height);
 
             x += middleWidth;
             width -= middleWidth;
@@ -91,26 +88,26 @@ public abstract class ExtendedScreen extends Screen {
         return x;
     }
 
-    public void blitVerticallyInterpolated(final int x, int y, final int startU, final int startV,
-                                           final int middleV, final int endV, final int finalV,
-                                           final int width, int height) {
+    public void drawVerticallyInterpolatedTexture(final MatrixStack stack, final int x, int y, final int startU, final int startV,
+                                                  final int middleV, final int endV, final int finalV,
+                                                  final int width, int height) {
         final int startHeight = middleV - startV;
         final int finalHeight = finalV - endV;
 
-        this.blit(x, y, startU, startV, width, startHeight);
+        this.drawTexture(stack, x, y, startU, startV, width, startHeight);
         height -= startHeight + finalHeight;
         y += startHeight;
-        y = this.blitVerticallyInterpolated(x, y, startU, middleV, endV, width, height);
+        y = this.drawVerticallyInterpolatedTexture(stack, x, y, startU, middleV, endV, width, height);
 
-        this.blit(x, y, startU, endV, width, finalHeight);
+        this.drawTexture(stack, x, y, startU, endV, width, finalHeight);
     }
 
-    public int blitVerticallyInterpolated(final int x, int y, final int startU, final int middleV,
-                                          final int endV, final int width, int height) {
+    public int drawVerticallyInterpolatedTexture(final MatrixStack stack, final int x, int y, final int startU, final int middleV,
+                                                 final int endV, final int width, int height) {
         while (height > 0) {
             final int middleHeight = Math.min(height, endV - middleV);
 
-            this.blit(x, y, startU, middleV, width, middleHeight);
+            this.drawTexture(stack, x, y, startU, middleV, width, middleHeight);
             y += middleHeight;
             height -= middleHeight;
         }
@@ -153,25 +150,13 @@ public abstract class ExtendedScreen extends Screen {
     }
 
     public void withZ(final int offset, final Runnable runnable) {
-        this.addBlitOffset(offset);
+        this.addZOffset(offset);
         runnable.run();
-        this.addBlitOffset(-offset);
+        this.addZOffset(-offset);
     }
 
-    public void addBlitOffset(final int blitOffset) {
-        this.setBlitOffset(this.getBlitOffset() + blitOffset);
-    }
-
-    public static Sprite getSprite(final Block block) {
-        return getSprite(block.getDefaultState());
-    }
-
-    public static Sprite getSprite(final BlockState blockState) {
-        return MainClient.CLIENT.getBlockRenderManager().getModels().getSprite(blockState);
-    }
-
-    public static SpriteAtlasTexture getSprite(final Item item) {
-        return null;//ITEM_MODELS.getModel(new ItemStack(item)).getQuads(null, null, null).get(0);
+    public void addZOffset(final int zOffset) {
+        this.setZOffset(this.getZOffset() + zOffset);
     }
 
     public static Identifier getTexture(final SpriteAtlasTexture sprite) {
@@ -195,9 +180,8 @@ public abstract class ExtendedScreen extends Screen {
         StringBuilder currentLine = new StringBuilder();
 
         for (final String word : string.split(" ")) {
-            final int wordWidth = MainClient.CLIENT.textRenderer.getStringWidth(word);
-            final int lineWidth = TEXT_RENDERER.getStringWidth(currentLine.toString());
-
+            final int wordWidth = MainClient.CLIENT.textRenderer.getWidth(word);
+            final int lineWidth = TEXT_RENDERER.getWidth(currentLine.toString());
             final boolean wrap = lineWidth + wordWidth > width;
 
             if (wrap && currentLine.length() == 0) {
