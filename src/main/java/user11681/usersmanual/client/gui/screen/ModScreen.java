@@ -2,9 +2,11 @@ package user11681.usersmanual.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
@@ -31,15 +33,38 @@ public abstract class ModScreen extends Screen {
         super(title);
     }
 
-    @Override
-    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
-        if (MainClient.CLIENT.options.keyInventory.matchesKey(keyCode, scanCode)) {
-            this.onClose();
-
-            return true;
+    @SafeVarargs
+    protected final <T extends AbstractButtonWidget> T[] addButtons(final T... buttons) {
+        for (final T button : buttons) {
+            this.addButton(button);
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return buttons;
+    }
+
+    protected <T extends Collection<U>, U extends AbstractButtonWidget> T addButtons(final T buttons) {
+        for (final AbstractButtonWidget button : buttons) {
+            this.addButton(button);
+        }
+
+        return buttons;
+    }
+
+    @SafeVarargs
+    protected final <T extends AbstractButtonWidget> void removeButtons(final T... buttons) {
+        for (final T button : buttons) {
+            this.removeButton(button);
+        }
+    }
+
+    protected <T extends Collection<U>, U extends AbstractButtonWidget> void removeButtons(final T buttons) {
+        this.buttons.removeAll(buttons);
+        this.children.removeAll(buttons);
+    }
+
+    protected <T extends AbstractButtonWidget> void removeButton(final T button) {
+        this.buttons.remove(button);
+        this.children.remove(button);
     }
 
     public void drawInterpolatedTexture(final MatrixStack stack, int x, int y, final int startU, final int startV, final int middleU,

@@ -24,21 +24,7 @@ public abstract class ScreenTab extends ModScreen {
 
         this.tabs = tabs;
         this.tabButtons = new ArrayList<>();
-
-        if (!tabs.contains(this)) {
-            tabs.add(this);
-        }
-
         this.index = tabs.indexOf(this);
-    }
-
-    @SafeVarargs
-    protected final <T extends ButtonWidget> T[] addButtons(final T... buttons) {
-        for (final T button : buttons) {
-            this.addButton(button);
-        }
-
-        return buttons;
     }
 
     protected Text getLabel() {
