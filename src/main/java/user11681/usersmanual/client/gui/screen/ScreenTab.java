@@ -24,7 +24,7 @@ public abstract class ScreenTab extends ModScreen {
 
         this.tabs = tabs;
         this.tabButtons = new ArrayList<>();
-        this.index = tabs.indexOf(this);
+        this.index = tabs.size();
     }
 
     protected Text getLabel() {
