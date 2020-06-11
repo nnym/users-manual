@@ -29,7 +29,7 @@ public class ModRegistry<T extends RegistryEntry> implements Iterable<T> {
         return this.entries.get(identifier);
     }
 
-    public ArraySet<Identifier> keys() {
+    public ArraySet<Identifier> identifiers() {
         return this.entries.keySet();
     }
 

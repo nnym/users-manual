@@ -145,7 +145,7 @@ public abstract class ModScreen extends Screen {
         final ItemRenderer renderer = this.itemRenderer;
 
         renderer.zOffset += zOffset;
-        this.withZ(zOffset, () -> renderer.renderGuiItem(itemStack, x, y));
+        this.withZ(zOffset, () -> renderer.renderGuiItemIcon(itemStack, x, y));
         renderer.zOffset -= zOffset;
     }
 
