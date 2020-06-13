@@ -10,13 +10,17 @@ import user11681.usersmanual.collections.CollectionUtil;
 
 @SuppressWarnings({"unchecked", "ConstantConditions"})
 public class ReflectUtil {
-    public static <U> U getFieldValue(final Object object, final String fieldName) {
-        return getFieldValue(object.getClass(), object, fieldName);
+    public static <U> U getFieldValue(final Object object, final String name) {
+        return getFieldValue(object.getClass(), object, name);
+    }
+
+    public static <U> U getFieldValue(final Class<?> clazz, final String name) {
+        return getFieldValue(clazz, null, name);
     }
 
     @Nonnull
-    public static <U> U getFieldValue(final Class<?> clazz, final Object object, final String fieldName) {
-        return getFieldValue(object, getLowestField(clazz, fieldName));
+    public static <U> U getFieldValue(final Class<?> clazz, final Object object, final String name) {
+        return getFieldValue(object, getLowestField(clazz, name));
     }
 
     public static <T> T getFieldValue(final Field field) {
@@ -40,17 +44,17 @@ public class ReflectUtil {
         return null;
     }
 
-    public static void setField(final Object object, final String fieldName, final Object value) {
-        setField(object.getClass(), object, fieldName, value);
+    public static void setField(final Object object, final String name, final Object value) {
+        setField(object.getClass(), object, name, value);
     }
 
-    public static void setField(final Class<?> clazz, final String fieldName, final Object value) {
-        setField(clazz, null, fieldName, value);
+    public static void setField(final Class<?> clazz, final String name, final Object value) {
+        setField(clazz, null, name, value);
     }
 
-    public static void setField(final Class<?> clazz, final Object object, final String fieldName, final Object value) {
+    public static void setField(final Class<?> clazz, final Object object, final String name, final Object value) {
         try {
-            final Field field = getLowestField(clazz, fieldName);
+            final Field field = getLowestField(clazz, name);
 
             if (object == null) {
                 setField(field, "modifiers", field.getModifiers() & ~Modifier.FINAL);
@@ -78,15 +82,15 @@ public class ReflectUtil {
         }
     }
 
-    public static Field getLowestField(final Object object, final String fieldName) {
-        return getLowestField(object.getClass(), fieldName);
+    public static Field getLowestField(final Object object, final String name) {
+        return getLowestField(object.getClass(), name);
     }
 
-    public static Field getLowestField(final Class<?> clazz, final String fieldName) {
+    public static Field getLowestField(final Class<?> clazz, final String name) {
         try {
-            return clazz.getDeclaredField(fieldName);
+            return clazz.getDeclaredField(name);
         } catch (final NoSuchFieldException exception) {
-            return getLowestField(clazz.getSuperclass(), fieldName);
+            return getLowestField(clazz.getSuperclass(), name);
         }
     }
 
