@@ -31,6 +31,10 @@ public final class ItemModifiers extends Item {
         return null;
     }
 
+    public static boolean isReserved(final UUID uuid) {
+        return RESERVED_IDENTIFIERS.contains(uuid);
+    }
+
     private ItemModifiers(final Settings settings) {
         super(settings);
     }
