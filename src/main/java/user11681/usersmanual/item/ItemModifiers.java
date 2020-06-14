@@ -11,6 +11,10 @@ public final class ItemModifiers extends Item {
     public static final UUID ATTACK_DAMAGE_MODIFIER_ID = reserve(Item.ATTACK_DAMAGE_MODIFIER_ID);
     public static final UUID ATTACK_SPEED_MODIFIER_ID = reserve(Item.ATTACK_SPEED_MODIFIER_ID);
 
+    public static UUID reserve(final String uuid) {
+        return reserve(UUID.fromString(uuid));
+    }
+
     public static UUID reserve(final UUID uuid) {
         RESERVED_IDENTIFIERS.add(uuid);
 
