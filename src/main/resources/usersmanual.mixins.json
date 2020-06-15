@@ -5,7 +5,8 @@
     "mixins": [
         "entity.EntityAttributeModifierMixin",
         "entity.EntityMixin",
-        "entity.player.PlayerInventoryMixin"
+        "entity.player.PlayerInventoryMixin",
+        "item.ItemStackMixin"
     ],
     "injectors": {
         "defaultRequire": 1

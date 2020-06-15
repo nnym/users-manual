@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import user11681.usersmanual.item.ItemModifiers;
+import user11681.usersmanual.entity.AttributeModifierIdentifiers;
 
 @Mixin(EntityAttributeModifier.class)
 public abstract class EntityAttributeModifierMixin {
@@ -20,7 +20,7 @@ public abstract class EntityAttributeModifierMixin {
 
     @Inject(method = "<init>(Ljava/util/UUID;Ljava/lang/String;DLnet/minecraft/entity/attribute/EntityAttributeModifier$Operation;)V", at = @At("RETURN"))
     public void construct(final UUID uuid, final String name, final double value, final EntityAttributeModifier.Operation operation, final CallbackInfo info) {
-        final UUID original = ItemModifiers.getOriginal(uuid);
+        final UUID original = AttributeModifierIdentifiers.getOriginal(uuid);
 
         if (original != null) {
             this.uuid = original;

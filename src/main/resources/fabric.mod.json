@@ -14,6 +14,8 @@
     "icon": "assets/usersmanual/icon.png",
     "environment": "*",
     "entrypoints": {
+        "main": [
+        ]
     },
     "mixins": [
         "usersmanual.mixins.json"

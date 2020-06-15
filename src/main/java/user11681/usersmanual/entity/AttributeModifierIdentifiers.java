@@ -1,11 +1,11 @@
-package user11681.usersmanual.item;
+package user11681.usersmanual.entity;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import net.minecraft.item.Item;
 
-public final class ItemModifiers extends Item {
+public final class AttributeModifierIdentifiers extends Item {
     private static final Set<UUID> RESERVED_IDENTIFIERS = new HashSet<>();
 
     public static final UUID ATTACK_DAMAGE_MODIFIER_ID = reserve(Item.ATTACK_DAMAGE_MODIFIER_ID);
@@ -35,7 +35,7 @@ public final class ItemModifiers extends Item {
         return RESERVED_IDENTIFIERS.contains(uuid);
     }
 
-    private ItemModifiers(final Settings settings) {
+    private AttributeModifierIdentifiers(final Settings settings) {
         super(settings);
     }
 }

@@ -7,14 +7,7 @@ import java.lang.reflect.Method;
 
 public class MethodWrapper<R, O> {
     protected final Method method;
-
-    protected O object;
-
-    public MethodWrapper(final O object, final String name, final Class<?>... parameterTypes) {
-        this(object.getClass(), name, parameterTypes);
-
-        this.object = object;
-    }
+    protected final O object;
 
     public MethodWrapper(final Class<?> clazz, final String name, final Class<?>... parameterTypes) {
         this(ReflectUtil.getLowestMethod(clazz, name, parameterTypes));
@@ -23,6 +16,13 @@ public class MethodWrapper<R, O> {
     public MethodWrapper(final Method method) {
         this.method = method;
         this.method.setAccessible(true);
+        this.object = null;
+    }
+
+    public MethodWrapper(final O object, final String name, final Class<?>... parameterTypes) {
+        this.method = ReflectUtil.getLowestMethod(object.getClass(), name, parameterTypes);
+        this.method.setAccessible(true);
+        this.object = object;
     }
 
     @SuppressWarnings("unchecked")
@@ -30,7 +30,7 @@ public class MethodWrapper<R, O> {
         try {
             return (R) this.method.invoke(object, args);
         } catch (final IllegalAccessException | InvocationTargetException exception) {
-            Main.LOGGER.error(exception);
+            Main.LOGGER.error("An error occurred in an attempt to invoke a wrapped method", exception);
         }
 
         return null;

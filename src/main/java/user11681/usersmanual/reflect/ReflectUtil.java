@@ -1,10 +1,14 @@
 package user11681.usersmanual.reflect;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
+import sun.reflect.ConstructorAccessor;
 import user11681.usersmanual.Main;
 import user11681.usersmanual.collections.CollectionUtil;
 
@@ -103,5 +107,47 @@ public class ReflectUtil {
         }
 
         return fields;
+    }
+
+    public static <T extends Enum<T>> T newEnumInstance(final T[] values, final String name, final Object... arguments) {
+        final int length = arguments.length;
+        final Object[] enumArguments = new Object[length + 2];
+
+        enumArguments[0] = name;
+        enumArguments[1] = values.length;
+
+        System.arraycopy(arguments, 0, enumArguments, 2, length);
+
+        return (T) newInstance(values.getClass().getComponentType(), enumArguments);
+    }
+
+    public static <T> T newInstance(final Class<T> clazz, final Object... arguments) {
+        for (final Constructor<?> constructor : clazz.getDeclaredConstructors()) {
+            final T instance = newInstance(constructor, arguments);
+
+            if (instance != null) {
+                return instance;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("%s constructor with parameters of types %s was not found.", clazz.getName(),
+                Arrays.toString(Arrays.stream(arguments).map(Object::getClass).toArray())
+        ));
+    }
+
+    public static <T> T newInstance(final Constructor<?> constructor, final Object... arguments) {
+        constructor.setAccessible(true);
+
+        try {
+            final ConstructorAccessor accessor = getFieldValue(constructor, "constructorAccessor");
+
+            if (accessor == null) {
+                return (T) new MethodWrapper<ConstructorAccessor, Constructor<?>>(constructor, "acquireConstructorAccessor").invoke().newInstance(arguments);
+            }
+
+            return (T) accessor.newInstance(arguments);
+        } catch (final IllegalArgumentException | InstantiationException | InvocationTargetException ignored) {
+            return null;
+        }
     }
 }
