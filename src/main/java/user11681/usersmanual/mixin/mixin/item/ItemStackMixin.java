@@ -22,7 +22,7 @@ public abstract class ItemStackMixin {
         return AttributeModifierIdentifiers.isReserved(this.modifier.getId()) || green;
     }
 
-    @ModifyVariable(method = "getTooltip", at = @At(value = "LOAD", ordinal = 0), ordinal = 0)
+    @ModifyVariable(method = "getTooltip", at = @At(value = "STORE", ordinal = 2), index = 16, name = "g")
     private double convertToPercentage(final double value) {
         return this.modifier.getOperation() == AttributeModifierOperations.PERCENTAGE_ADDITION ? 100 * value : value;
     }
