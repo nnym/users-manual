@@ -24,7 +24,6 @@ public abstract class ItemStackMixin {
 
     @ModifyVariable(method = "getTooltip", at = @At(value = "LOAD", ordinal = 0), ordinal = 0)
     private double convertToPercentage(final double value) {
-        return this.modifier.getOperation() == AttributeModifierOperations.ADD_PERCENTAGE ? 100 * value : value;
+        return this.modifier.getOperation() == AttributeModifierOperations.PERCENTAGE_ADDITION ? 100 * value : value;
     }
-
 }

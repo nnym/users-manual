@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import user11681.usersmanual.mixin.duck.entity.BossEntityDuck;
-import user11681.usersmanual.reflect.ReflectUtil;
+import user11681.usersmanual.reflect.FieldUtil;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements BossEntityDuck {
@@ -25,7 +25,7 @@ public abstract class EntityMixin implements BossEntityDuck {
         final Class<? extends Entity> clazz = thiz.getClass();
 
         if (!REGISTRY.containsKey(clazz)) {
-            final List<Field> fields = ReflectUtil.getAllFields(thiz.getClass());
+            final List<Field> fields = FieldUtil.getAllFields(thiz.getClass());
             boolean boss = false;
 
             for (int i = 0, size = fields.size(); i < size && !boss; i++) {

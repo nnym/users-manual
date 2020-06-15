@@ -10,7 +10,7 @@ public class MethodWrapper<R, O> {
     protected final O object;
 
     public MethodWrapper(final Class<?> clazz, final String name, final Class<?>... parameterTypes) {
-        this(ReflectUtil.getLowestMethod(clazz, name, parameterTypes));
+        this(MethodUtil.getLowestMethod(clazz, name, parameterTypes));
     }
 
     public MethodWrapper(final Method method) {
@@ -20,7 +20,7 @@ public class MethodWrapper<R, O> {
     }
 
     public MethodWrapper(final O object, final String name, final Class<?>... parameterTypes) {
-        this.method = ReflectUtil.getLowestMethod(object.getClass(), name, parameterTypes);
+        this.method = MethodUtil.getLowestMethod(object.getClass(), name, parameterTypes);
         this.method.setAccessible(true);
         this.object = object;
     }
