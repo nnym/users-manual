@@ -7,7 +7,7 @@ import user11681.usersmanual.reflect.ConstructorUtil;
 import user11681.usersmanual.reflect.FieldUtil;
 
 public class AttributeModifierOperations {
-    public static final EntityAttributeModifier.Operation PERCENTAGE_ADDITION = register("ADD_PERCENTAGE", EntityAttributeModifier.Operation.values().length);
+    public static final EntityAttributeModifier.Operation PERCENTAGE_ADDITION = register("PERCENTAGE_ADDITION", EntityAttributeModifier.Operation.values().length);
 
     public static EntityAttributeModifier.Operation register(final String name, final int id) {
         final EntityAttributeModifier.Operation operation = ConstructorUtil.addEnumInstance(EntityAttributeModifier.Operation.values(), name, id);
