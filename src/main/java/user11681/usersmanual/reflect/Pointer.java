@@ -34,7 +34,7 @@ public class Pointer<T> {
         return new Pointer<>(clazz, null, name);
     }
 
-    public final T dereference() {
+    public final T get() {
         try {
             //noinspection unchecked
             return (T) this.field.get(this.owner);
@@ -43,6 +43,14 @@ public class Pointer<T> {
         }
 
         return null;
+    }
+
+    public final void set(final T value) {
+        try {
+            this.field.set(this.owner, value);
+        } catch (final IllegalAccessException exception) {
+            throwException(exception);
+        }
     }
 
     private static Field getField(final Class<?> clazz, final String name) {
