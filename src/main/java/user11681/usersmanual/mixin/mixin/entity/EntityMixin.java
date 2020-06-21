@@ -13,19 +13,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import user11681.usersmanual.mixin.duck.entity.BossEntityDuck;
-import user11681.usersmanual.reflect.FieldUtil;
+import user11681.usersmanual.reflect.Fields;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements BossEntityDuck {
     private static final Map<Class<? extends Entity>, Boolean> REGISTRY = new HashMap<>();
 
+    private final Entity self = (Entity) (Object) this;
+
     @Inject(method = "<init>", at = @At("TAIL"))
-    protected void constructor(final EntityType<?> type, final World world, final CallbackInfo info) {
-        final Entity thiz = thiz();
+    private void constructor(final EntityType<?> type, final World world, final CallbackInfo info) {
+        final Entity thiz = self;
         final Class<? extends Entity> clazz = thiz.getClass();
 
         if (!REGISTRY.containsKey(clazz)) {
-            final List<Field> fields = FieldUtil.getAllFields(thiz.getClass());
+            final List<Field> fields = Fields.getAllFields(thiz.getClass());
             boolean boss = false;
 
             for (int i = 0, size = fields.size(); i < size && !boss; i++) {
@@ -45,17 +47,12 @@ public abstract class EntityMixin implements BossEntityDuck {
     }
 
     @Override
-    public boolean isBoss() {
+    public final boolean isBoss() {
         return REGISTRY.get(this.getClass());
     }
 
     @Override
-    public void setBoss(final boolean boss) {
-        REGISTRY.put(thiz().getClass(), boss);
-    }
-
-    protected Entity thiz() {
-        // noinspection  ConstantConditions
-        return (Entity) (Object) this;
+    public final void setBoss(final boolean boss) {
+        REGISTRY.put(self.getClass(), boss);
     }
 }

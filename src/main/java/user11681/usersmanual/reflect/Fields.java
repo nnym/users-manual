@@ -9,7 +9,7 @@ import user11681.usersmanual.Main;
 import user11681.usersmanual.collections.CollectionUtil;
 
 @SuppressWarnings({"unchecked", "ConstantConditions"})
-public class FieldUtil {
+public class Fields {
     public static void addToArray(final String name, final Object owner, final Object newElement) {
         addToArray(owner.getClass(), owner, name, newElement);
     }

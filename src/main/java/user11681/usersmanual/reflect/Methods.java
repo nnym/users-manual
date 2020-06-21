@@ -2,7 +2,7 @@ package user11681.usersmanual.reflect;
 
 import java.lang.reflect.Method;
 
-public class MethodUtil {
+public class Methods {
     public static Method getLowestMethod(final Object object, final String methodName,
                                          final Class<?>... parameterTypes) {
         return getLowestMethod(object.getClass(), methodName, parameterTypes);

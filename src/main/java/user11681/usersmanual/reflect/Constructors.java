@@ -9,7 +9,7 @@ import java.util.Arrays;
 import sun.reflect.ConstructorAccessor;
 
 @SuppressWarnings({"unchecked", "ConstantConditions"})
-public class ConstructorUtil {
+public class Constructors {
     public static <T extends Enum<T>> T addEnumInstance(final T[] values, final String name, final Object... arguments) {
         return addEnumInstance(newEnumInstance(values, name, arguments));
     }

@@ -16,7 +16,7 @@ public class FieldWrapper<F, O> {
     }
 
     public FieldWrapper(final Class<? super O> clazz, final O object, final String field) {
-        this(object, FieldUtil.getLowestField(clazz, field));
+        this(object, Fields.getLowestField(clazz, field));
     }
 
     public FieldWrapper(final O object, final Field field) {
@@ -27,7 +27,7 @@ public class FieldWrapper<F, O> {
     }
 
     public FieldWrapper(final Class<?> clazz, final String field) {
-        this(FieldUtil.getLowestField(clazz, field));
+        this(Fields.getLowestField(clazz, field));
     }
 
     public FieldWrapper(final Field field) {
@@ -60,7 +60,7 @@ public class FieldWrapper<F, O> {
 
     protected void setAccessible() {
         if (this.object == null) {
-            FieldUtil.setField(this.field, "modifiers", this.field.getModifiers() & ~Modifier.FINAL);
+            Fields.setField(this.field, "modifiers", this.field.getModifiers() & ~Modifier.FINAL);
         }
 
         this.field.setAccessible(true);
