@@ -21,6 +21,11 @@ repositories {
     maven {
         url "https://maven.jamieswhiteshirt.com/libs-release"
     }
+
+    maven {
+        name = "Cotton"
+        url = "https://server.bbkr.space/artifactory/libs-release/"
+    }
 }
 
 dependencies {

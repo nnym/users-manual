@@ -28,27 +28,22 @@ public abstract class EntityMixin implements BossEntityDuck {
 
         if (!REGISTRY.containsKey(clazz)) {
             final List<Field> fields = Fields.getAllFields(thiz.getClass());
-            boolean boss = false;
 
-            for (int i = 0, size = fields.size(); i < size && !boss; i++) {
+            for (int i = 0, size = fields.size(); i < size && !this.isBoss(); i++) {
                 final Field field = fields.get(i);
 
                 field.setAccessible(true);
 
                 if (BossBar.class.isAssignableFrom(field.getType())) {
-                    boss = true;
+                    REGISTRY.put(thiz.getClass(), true);
                 }
-
-                field.setAccessible(false);
             }
-
-            REGISTRY.put(thiz.getClass(), boss);
         }
     }
 
     @Override
     public final boolean isBoss() {
-        return REGISTRY.get(this.getClass());
+        return REGISTRY.getOrDefault(this.getClass(), false);
     }
 
     @Override

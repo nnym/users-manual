@@ -5,6 +5,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 
 @Environment(EnvType.CLIENT)
-public class MainClient {
+public class Client {
     public static final MinecraftClient CLIENT = MinecraftClient.getInstance();
 }

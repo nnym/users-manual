@@ -8,7 +8,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget.PressAction;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import user11681.usersmanual.MainClient;
+import user11681.usersmanual.Client;
 import user11681.usersmanual.client.gui.widget.ExtendedButtonWidget;
 
 @Environment(EnvType.CLIENT)
@@ -85,7 +85,7 @@ public abstract class ScreenTab extends ModScreen {
     }
 
     public void setTab(final int tab) {
-        MainClient.CLIENT.openScreen(this.tabs.get(tab));
+        Client.CLIENT.openScreen(this.tabs.get(tab));
     }
 
     public void refresh() {

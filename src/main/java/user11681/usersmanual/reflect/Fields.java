@@ -1,10 +1,14 @@
 package user11681.usersmanual.reflect;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
+import sun.reflect.FieldAccessor;
+import sun.reflect.ReflectionFactory;
 import user11681.usersmanual.Main;
 import user11681.usersmanual.collections.CollectionUtil;
 
@@ -153,6 +157,24 @@ public class Fields {
         return null;
     }
 
+    /**
+     * get the {@code private static final synthetic} enum array field in {@code enumClass}.
+     *
+     * @param enumClass the {@link Class} object of an enumeration from which to get its synthetic enum array field.
+     * @return the synthetic enum array field contained by {@code enumClass}.
+     */
+    public static Field getEnumArrayField(final Class<?> enumClass) {
+        for (final Field field : enumClass.getDeclaredFields()) {
+            final int modifiers = field.getModifiers();
+
+            if (field.isSynthetic() && field.getType().getComponentType() == enumClass && Modifier.isPrivate(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+                return field;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("%s is not an enum class.", enumClass.getName()));
+    }
+
     public static void setInt(final Field field, final Object object, final int value) {
         try {
             field.setInt(object, value);
@@ -166,6 +188,69 @@ public class Fields {
             field.set(object, value);
         } catch (final IllegalAccessException exception) {
             throwException(exception);
+        }
+    }
+
+    /**
+     * add a {@linkplain Field field} holding an enum {@code instance} to the class of its type.
+     *
+     * @param instance an enum instance.
+     */
+    public static void addEnumField(final Enum<?> instance) {
+        //noinspection ClassGetClass
+        addDeclaredField(instance.getClass().getClass(), newDeclaredEnumField(instance));
+    }
+
+    /**
+     * construct a {@linkplain Field field} belonging to the type of and holding {@code instance}.
+     *
+     * @param instance an enum instance.
+     * @return a new {@linkplain Field field} belonging to the type of and holding {@code instance}.
+     */
+    public static Field newDeclaredEnumField(final Enum<?> instance) {
+        //noinspection ClassGetClass
+        final Class<?> clazz = instance.getClass().getClass();
+
+        return ReflectionFactory.getReflectionFactory().newField(clazz, instance.name(), clazz, Modifiers.ENUM_FIELD, clazz.getDeclaredFields().length, null, null);
+    }
+
+    /**
+     * add {@linkplain Field field} to {@linkplain Class.ReflectionData#declaredFields declaredFields}.
+     *
+     * @param field the {@linkplain Field field} to add.
+     */
+    @SuppressWarnings("JavadocReference")
+    public static void addDeclaredField(Class<?> clazz, final Field field) {
+        try {
+            final Method privateGetDeclaredFields = clazz.getDeclaredMethod("privateGetDeclaredFields", boolean.class);
+            final Method reflectionData = clazz.getDeclaredMethod("reflectionData");
+
+            privateGetDeclaredFields.setAccessible(true);
+            reflectionData.setAccessible(true);
+
+            final Field[] oldDeclaredFields = (Field[]) privateGetDeclaredFields.invoke(clazz, false);
+            final int length = oldDeclaredFields.length;
+            final Field[] newDeclaredFields = Arrays.copyOf(oldDeclaredFields, length + 1);
+            final Class<?> ReflectionData = Class.forName("java.lang.Class$ReflectionData");
+            final Field declaredFields = ReflectionData.getDeclaredField("declaredFields");
+
+            declaredFields.setAccessible(true);
+            reflectionData.setAccessible(true);
+
+            newDeclaredFields[length] = field;
+            declaredFields.set(reflectionData.invoke(clazz), newDeclaredFields);
+        } catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | ClassNotFoundException exception) {
+            throw new ReflectionException(exception);
+        }
+    }
+
+    public static <T> T unsafeGetFieldValue(final Field field, final Object owner) {
+        try {
+            final Method getFieldAccessor = Field.class.getDeclaredMethod("getFieldAccessor", Object.class);
+            final FieldAccessor fieldAccessor = (FieldAccessor) getFieldAccessor.invoke(field, owner);
+            return (T) fieldAccessor.get(owner);
+        } catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException exception) {
+            throw new ReflectionException(exception);
         }
     }
 
