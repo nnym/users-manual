@@ -29,8 +29,15 @@ public abstract class ModScreen extends Screen {
     public static final ResourceManager RESOURCE_MANAGER = Client.CLIENT.getResourceManager();
     public static final Identifier GLINT = new Identifier("textures/misc/enchanted_item_glint.png");
 
+    protected int textureWidth;
+    protected int textureHeight;
+
     protected ModScreen(final Text title) {
         super(title);
+    }
+
+    protected void setTextureSize(final int size) {
+        this.textureHeight = this.textureWidth = size;
     }
 
     @SafeVarargs
@@ -67,9 +74,8 @@ public abstract class ModScreen extends Screen {
         this.children.remove(button);
     }
 
-    public void drawInterpolatedTexture(final MatrixStack stack, int x, int y, final int startU, final int startV, final int middleU,
-                                        final int middleV, final int endU, final int endV, final int finalU,
-                                        final int finalV, int width, int height) {
+    public void drawInterpolatedTexture(final MatrixStack stack, int x, int y, final int startU, final int startV, final int middleU, final int middleV,
+                                        final int endU, final int endV, final int finalU, final int finalV, final int width, final int height) {
         final int leftWidth = middleU - startU;
         final int topHeight = middleV - startV;
 
@@ -80,9 +86,8 @@ public abstract class ModScreen extends Screen {
         this.drawVerticallyInterpolatedTexture(stack, x + leftWidth, y + topHeight, middleU, middleV, endV, width - 2 * leftWidth, height - 2 * topHeight);
     }
 
-    public void drawHorizontallyInterpolatedTexture(final MatrixStack stack, int x, final int y, int startU, final int startV,
-                                                    final int middleU, int endU, final int finalU, int width,
-                                                    final int height) {
+    public void drawHorizontallyInterpolatedTexture(final MatrixStack stack, int x, final int y, int startU, final int startV, final int middleU,
+                                                    final int endU, final int finalU, int width, final int height) {
         if (middleU < startU) {
             startU = middleU;
         }
@@ -90,21 +95,21 @@ public abstract class ModScreen extends Screen {
         final int startWidth = middleU - startU;
         final int finalWidth = finalU - endU;
 
-        this.drawTexture(stack, x, y, startU, startV, startWidth, height);
+        drawTexture(stack, x, y, startU, startV, startWidth, height, this.textureWidth, this.textureHeight);
 
         width -= startWidth + finalWidth;
         x += startWidth;
         x = this.drawHorizontallyInterpolatedTexture(stack, x, y, startV, middleU, endU, width, height);
 
-        this.drawTexture(stack, x, y, endU, startV, finalWidth, height);
+        drawTexture(stack, x, y, endU, startV, finalWidth, height, this.textureWidth, this.textureHeight);
     }
 
-    public int drawHorizontallyInterpolatedTexture(final MatrixStack stack, int x, final int y, final int startV, final int middleU,
-                                                   final int endU, int width, final int height) {
+    public int drawHorizontallyInterpolatedTexture(final MatrixStack stack, int x, final int y, final int startV, final int middleU, final int endU, int width,
+                                                   final int height) {
         while (width > 0) {
             final int middleWidth = Math.min(width, endU - middleU);
 
-            this.drawTexture(stack, x, y, middleU, startV, middleWidth, height);
+            drawTexture(stack, x, y, middleU, startV, middleWidth, height, this.textureWidth, this.textureHeight);
 
             x += middleWidth;
             width -= middleWidth;
@@ -113,26 +118,25 @@ public abstract class ModScreen extends Screen {
         return x;
     }
 
-    public void drawVerticallyInterpolatedTexture(final MatrixStack stack, final int x, int y, final int startU, final int startV,
-                                                  final int middleV, final int endV, final int finalV,
-                                                  final int width, int height) {
+    public void drawVerticallyInterpolatedTexture(final MatrixStack stack, final int x, int y, final int startU, final int startV, final int middleV,
+                                                  final int endV, final int finalV, final int width, int height) {
         final int startHeight = middleV - startV;
         final int finalHeight = finalV - endV;
 
-        this.drawTexture(stack, x, y, startU, startV, width, startHeight);
+        drawTexture(stack, x, y, startU, startV, width, startHeight, this.textureWidth, this.textureHeight);
         height -= startHeight + finalHeight;
         y += startHeight;
         y = this.drawVerticallyInterpolatedTexture(stack, x, y, startU, middleV, endV, width, height);
 
-        this.drawTexture(stack, x, y, startU, endV, width, finalHeight);
+        drawTexture(stack, x, y, startU, endV, width, finalHeight, this.textureWidth, this.textureHeight);
     }
 
-    public int drawVerticallyInterpolatedTexture(final MatrixStack stack, final int x, int y, final int startU, final int middleV,
-                                                 final int endV, final int width, int height) {
+    public int drawVerticallyInterpolatedTexture(final MatrixStack stack, final int x, int y, final int startU, final int middleV, final int endV,
+                                                 final int width, int height) {
         while (height > 0) {
             final int middleHeight = Math.min(height, endV - middleV);
 
-            this.drawTexture(stack, x, y, startU, middleV, width, middleHeight);
+            drawTexture(stack, x, y, startU, middleV, width, middleHeight, this.textureWidth, this.textureHeight);
             y += middleHeight;
             height -= middleHeight;
         }

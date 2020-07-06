@@ -3,8 +3,8 @@ package user11681.usersmanual.entity;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
-import user11681.usersmanual.reflect.Constructors;
-import user11681.usersmanual.reflect.Fields;
+import user11681.mirror.Constructors;
+import user11681.mirror.Fields;
 
 public class AttributeModifierOperations {
     public static final EntityAttributeModifier.Operation PERCENTAGE_ADDITION = register("PERCENTAGE_ADDITION", EntityAttributeModifier.Operation.values().length);

@@ -2,4 +2,6 @@ version = "0.1.0"
 
 dependencies {
     modApi(include("net.auoeke:romeral:+"))
+    implementation "${project.mirror}"
+    include "${project.mirror}"
 }

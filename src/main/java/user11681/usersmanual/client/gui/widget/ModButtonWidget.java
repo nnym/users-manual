@@ -4,17 +4,17 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
-public class ExtendedButtonWidget extends ButtonWidget {
+public class ModButtonWidget extends ButtonWidget {
     protected final PressAction secondaryAction;
     public final int endX;
     public final int endY;
 
-    public ExtendedButtonWidget(final int x, final int y, final Text text, final PressAction action) {
+    public ModButtonWidget(final int x, final int y, final Text text, final PressAction action) {
         this(x, y, 200, 20, text, action);
     }
 
-    public ExtendedButtonWidget(final int x, final int y, final int width, final int height, final Text text,
-                                final PressAction action) {
+    public ModButtonWidget(final int x, final int y, final int width, final int height, final Text text,
+                           final PressAction action) {
         super(x, y, width, height, text, action);
 
         this.secondaryAction = null;
@@ -23,8 +23,8 @@ public class ExtendedButtonWidget extends ButtonWidget {
         this.endY = this.y + this.height;
     }
 
-    public ExtendedButtonWidget(final int x, final int y, final int width, final int height, final Text text,
-                                final PressAction primaryAction, final PressAction secondaryAction) {
+    public ModButtonWidget(final int x, final int y, final int width, final int height, final Text text,
+                           final PressAction primaryAction, final PressAction secondaryAction) {
         super(x, y, width, height, text, primaryAction);
 
         this.secondaryAction = secondaryAction;

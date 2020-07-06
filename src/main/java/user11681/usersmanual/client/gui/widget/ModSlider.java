@@ -4,9 +4,9 @@ import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
-public abstract class ExtendedSlider extends SliderWidget {
-    public ExtendedSlider(final int x, final int y, final int width, final int height, final double value, final double min,
-                          final double max, final Text text) {
+public abstract class ModSlider extends SliderWidget {
+    public ModSlider(final int x, final int y, final int width, final int height, final double value, final double min,
+                     final double max, final Text text) {
         super(x, y, width, height, text, value / (min + max));
 
         this.value = value;

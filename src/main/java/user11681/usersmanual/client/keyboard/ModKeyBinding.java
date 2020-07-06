@@ -2,14 +2,12 @@ package user11681.usersmanual.client.keyboard;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
-import net.minecraft.client.util.InputUtil.Type;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.options.KeyBinding;
 
 @Environment(EnvType.CLIENT)
-public abstract class ModKeyBinding extends FabricKeyBinding {
-    protected ModKeyBinding(final Identifier identifier, final Type type, final int code, final String category) {
-        super(identifier, type, code, category);
+public abstract class ModKeyBinding extends KeyBinding {
+    public ModKeyBinding(final String translationKey, final int code, final String category) {
+        super(translationKey, code, category);
     }
 
     @Override
@@ -23,9 +21,7 @@ public abstract class ModKeyBinding extends FabricKeyBinding {
         super.setPressed(pressed);
     }
 
-    protected void onPress() {
-    }
+    protected void onPress() {}
 
-    protected void onHold() {
-    }
+    protected void onHold() {}
 }

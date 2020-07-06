@@ -23,8 +23,12 @@ repositories {
     }
 
     maven {
-        name = "Cotton"
-        url = "https://server.bbkr.space/artifactory/libs-release/"
+        name "Cotton"
+        url "https://server.bbkr.space/artifactory/libs-release"
+    }
+
+    maven {
+        url "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master"
     }
 }
 
@@ -33,11 +37,12 @@ dependencies {
     mappings "${project.yarn}"
     modImplementation "${project.loader}"
 
-    modImplementation "${project.api}"
-
     compileOnly "${project.jetbrainsAnnotations}"
     compileOnly "${project.jsr}"
+
+//    modImplementation "com.jamieswhiteshirt:developer-mode:1.0.15"
 }
+
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
@@ -92,6 +97,6 @@ publishing {
     // select the repositories you want to publish to
     repositories {
         // uncomment to publish to the local maven
-         mavenLocal()
+        mavenLocal()
     }
 }

@@ -9,15 +9,15 @@ import net.minecraft.client.gui.widget.ButtonWidget.PressAction;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import user11681.usersmanual.Client;
-import user11681.usersmanual.client.gui.widget.ExtendedButtonWidget;
+import user11681.usersmanual.client.gui.widget.ModButtonWidget;
 
 @Environment(EnvType.CLIENT)
 public abstract class ScreenTab extends ModScreen {
     protected final List<ScreenTab> tabs;
-    protected final List<ExtendedButtonWidget> tabButtons;
+    protected final List<ModButtonWidget> tabButtons;
     protected final int index;
 
-    protected ExtendedButtonWidget tab;
+    protected ModButtonWidget tab;
 
     public ScreenTab(final Text title, final List<ScreenTab> tabs) {
         super(title);
@@ -40,7 +40,7 @@ public abstract class ScreenTab extends ModScreen {
 
         if (this.displayTabs()) {
             for (int index = 0, size = this.tabs.size(); index < size; index++) {
-                final ExtendedButtonWidget button = this.addButton(new ExtendedButtonWidget(
+                final ModButtonWidget button = this.addButton(new ModButtonWidget(
                         this.width / 24,
                         this.height / 16 + index * Math.max(this.height / 16, 30),
                         Math.max(96, Math.round(width / 7.5F)),
