@@ -12,22 +12,19 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import user11681.mirror.Fields;
+import user11681.mirror.reflect.Fields;
 import user11681.usersmanual.mixin.duck.entity.BossEntityDuck;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements BossEntityDuck {
-    private static final Map<Class<? extends Entity>, Boolean> REGISTRY = new HashMap<>();
+    private static final Map<EntityType<?>, Boolean> REGISTRY = new HashMap<>();
 
     private final Entity self = (Entity) (Object) this;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void constructor(final EntityType<?> type, final World world, final CallbackInfo info) {
-        final Entity thiz = self;
-        final Class<? extends Entity> clazz = thiz.getClass();
-
-        if (!REGISTRY.containsKey(clazz)) {
-            final List<Field> fields = Fields.getAllFields(thiz.getClass());
+        if (!REGISTRY.containsKey(type)) {
+            final List<Field> fields = Fields.getAllFields(self.getClass());
 
             for (int i = 0, size = fields.size(); i < size && !this.isBoss(); i++) {
                 final Field field = fields.get(i);
@@ -35,7 +32,7 @@ public abstract class EntityMixin implements BossEntityDuck {
                 field.setAccessible(true);
 
                 if (BossBar.class.isAssignableFrom(field.getType())) {
-                    REGISTRY.put(thiz.getClass(), true);
+                    REGISTRY.put(type, true);
                 }
             }
         }
@@ -43,11 +40,11 @@ public abstract class EntityMixin implements BossEntityDuck {
 
     @Override
     public final boolean isBoss() {
-        return REGISTRY.getOrDefault(this.getClass(), false);
+        return REGISTRY.getOrDefault(self.getType(), false);
     }
 
     @Override
     public final void setBoss(final boolean boss) {
-        REGISTRY.put(self.getClass(), boss);
+        REGISTRY.put(self.getType(), boss);
     }
 }

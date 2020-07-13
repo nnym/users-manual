@@ -4,4 +4,10 @@ dependencies {
     modApi(include("net.auoeke:romeral:+"))
     implementation "${project.mirror}"
     include "${project.mirror}"
+
+    modImplementation "${project.apiLifecycleEvents}"
+    modImplementation "${project.apiBase}"
+
+    modApi "${project.anvilEvents}"
+    modApi "${project.anvil}"
 }

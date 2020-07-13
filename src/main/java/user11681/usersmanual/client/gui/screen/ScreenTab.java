@@ -2,8 +2,6 @@ package user11681.usersmanual.client.gui.screen;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget.PressAction;
 import net.minecraft.text.Text;
@@ -11,7 +9,6 @@ import net.minecraft.util.math.MathHelper;
 import user11681.usersmanual.Client;
 import user11681.usersmanual.client.gui.widget.ModButtonWidget;
 
-@Environment(EnvType.CLIENT)
 public abstract class ScreenTab extends ModScreen {
     protected final List<ScreenTab> tabs;
     protected final List<ModButtonWidget> tabButtons;
