@@ -2,7 +2,6 @@ package user11681.usersmanual.asm.mixin.entity;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,7 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import user11681.mirror.reflect.Fields;
 import user11681.usersmanual.asm.duck.entity.BossEntityDuck;
 
 @Mixin(Entity.class)
@@ -24,16 +22,18 @@ public abstract class EntityMixin implements BossEntityDuck {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void constructor(final EntityType<?> type, final World world, final CallbackInfo info) {
         if (!REGISTRY.containsKey(type)) {
-            final List<Field> fields = Fields.getAllFields(self.getClass());
+            Class<?> klass = self.getClass();
 
-            for (int i = 0, size = fields.size(); i < size && !this.isBoss(); i++) {
-                final Field field = fields.get(i);
+            while (klass != null) {
+                for (final Field field : klass.getDeclaredFields()) {
+                    field.setAccessible(true);
 
-                field.setAccessible(true);
-
-                if (BossBar.class.isAssignableFrom(field.getType())) {
-                    REGISTRY.put(type, true);
+                    if (BossBar.class.isAssignableFrom(field.getType())) {
+                        REGISTRY.put(type, true);
+                    }
                 }
+
+                klass = klass.getSuperclass();
             }
         }
     }
