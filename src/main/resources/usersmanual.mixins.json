@@ -1,10 +1,11 @@
 {
     "required": true,
-    "package": "user11681.usersmanual.mixin.mixin",
+    "package": "user11681.usersmanual.asm.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-        "entity.EntityAttributeModifierMixin",
         "entity.EntityMixin",
+        "entity.attribute.EntityAttributeModifierMixin",
+        "entity.attribute.OperationMixin",
         "entity.player.PlayerInventoryMixin",
         "item.ItemStackMixin"
     ],

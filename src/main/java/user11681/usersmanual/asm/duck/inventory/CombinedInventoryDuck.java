@@ -1,4 +1,4 @@
-package user11681.usersmanual.mixin.duck.inventory;
+package user11681.usersmanual.asm.duck.inventory;
 
 import java.util.List;
 import net.minecraft.item.ItemStack;

@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 import user11681.usersmanual.collections.CollectionUtil;
-import user11681.usersmanual.mixin.duck.inventory.CombinedInventoryDuck;
+import user11681.usersmanual.asm.duck.inventory.CombinedInventoryDuck;
 
 public class ItemUtil {
     public static List<ItemStack> getCombinedSingleInventory(final PlayerEntity player) {

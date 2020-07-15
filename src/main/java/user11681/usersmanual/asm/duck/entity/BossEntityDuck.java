@@ -1,4 +1,4 @@
-package user11681.usersmanual.mixin.duck.entity;
+package user11681.usersmanual.asm.duck.entity;
 
 public interface BossEntityDuck {
     boolean isBoss();

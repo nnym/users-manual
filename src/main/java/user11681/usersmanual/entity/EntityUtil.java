@@ -4,7 +4,7 @@ import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
-import user11681.usersmanual.mixin.duck.entity.BossEntityDuck;
+import user11681.usersmanual.asm.duck.entity.BossEntityDuck;
 import user11681.usersmanual.server.ServerUtil;
 
 public class EntityUtil {

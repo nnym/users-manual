@@ -2,12 +2,15 @@ version = "0.1.0"
 
 dependencies {
     modApi(include("net.auoeke:romeral:+"))
-    implementation "${project.mirror}"
-    include "${project.mirror}"
+    implementation include("${project.mirror}")
 
-    modImplementation "${project.apiLifecycleEvents}"
-    modImplementation "${project.apiBase}"
+    modApi include("${project.anvilEvents}")
+    modApi include("${project.anvil}")
 
-    modApi "${project.anvilEvents}"
-    modApi "${project.anvil}"
+    modApi include("${project.apiBase}")
+    modApi include("${project.apiLifecycleEvents}")
+
+    modApi include("${project.fabricASM}")
+
+    modApi "${project.invisibleLivingEntities}"
 }

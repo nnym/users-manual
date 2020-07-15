@@ -1,4 +1,4 @@
-package user11681.usersmanual.mixin.mixin.item;
+package user11681.usersmanual.asm.mixin.item;
 
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.ItemStack;

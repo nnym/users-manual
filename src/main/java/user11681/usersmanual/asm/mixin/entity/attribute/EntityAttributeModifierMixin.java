@@ -1,4 +1,4 @@
-package user11681.usersmanual.mixin.mixin.entity;
+package user11681.usersmanual.asm.mixin.entity.attribute;
 
 import java.util.UUID;
 import net.minecraft.entity.attribute.EntityAttributeModifier;

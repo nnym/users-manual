@@ -1,4 +1,4 @@
-package user11681.usersmanual.mixin.mixin.entity;
+package user11681.usersmanual.asm.mixin.entity;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import user11681.mirror.reflect.Fields;
-import user11681.usersmanual.mixin.duck.entity.BossEntityDuck;
+import user11681.usersmanual.asm.duck.entity.BossEntityDuck;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements BossEntityDuck {
