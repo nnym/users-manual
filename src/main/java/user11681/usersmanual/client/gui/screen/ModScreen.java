@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -19,14 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import user11681.usersmanual.Client;
 
 public abstract class ModScreen extends Screen {
-    public static final ItemRenderer ITEM_RENDERER = Client.CLIENT.getItemRenderer();
+    public static final MinecraftClient CLIENT = MinecraftClient.getInstance();
+    public static final ItemRenderer ITEM_RENDERER = CLIENT.getItemRenderer();
     public static final ItemModels ITEM_MODELS = ITEM_RENDERER.getModels();
-    public static final TextureManager TEXTURE_MANAGER = Client.CLIENT.getTextureManager();
-    public static final TextRenderer TEXT_RENDERER = Client.CLIENT.textRenderer;
-    public static final ResourceManager RESOURCE_MANAGER = Client.CLIENT.getResourceManager();
+    public static final TextureManager TEXTURE_MANAGER = CLIENT.getTextureManager();
+    public static final TextRenderer TEXT_RENDERER = CLIENT.textRenderer;
+    public static final ResourceManager RESOURCE_MANAGER = CLIENT.getResourceManager();
     public static final Identifier GLINT = new Identifier("textures/misc/enchanted_item_glint.png");
 
     protected int textureWidth;
@@ -209,7 +210,7 @@ public abstract class ModScreen extends Screen {
         StringBuilder currentLine = new StringBuilder();
 
         for (final String word : string.split(" ")) {
-            final int wordWidth = Client.CLIENT.textRenderer.getWidth(word);
+            final int wordWidth = TEXT_RENDERER.getWidth(word);
             final int lineWidth = TEXT_RENDERER.getWidth(currentLine.toString());
             final boolean wrap = lineWidth + wordWidth > width;
 

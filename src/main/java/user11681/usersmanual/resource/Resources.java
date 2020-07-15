@@ -1,4 +1,4 @@
-package user11681.usersmanual.image;
+package user11681.usersmanual.resource;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;

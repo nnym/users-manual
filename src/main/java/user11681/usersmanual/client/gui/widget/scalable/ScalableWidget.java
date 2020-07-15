@@ -7,7 +7,7 @@ import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
-import user11681.usersmanual.image.Resources;
+import user11681.usersmanual.resource.Resources;
 
 public class ScalableWidget extends ButtonWidget {
     protected static final MinecraftClient CLIENT = MinecraftClient.getInstance();
@@ -15,11 +15,11 @@ public class ScalableWidget extends ButtonWidget {
     public final int[][][][] slices;
     public final int[][][] middles;
     public final int[][][] corners;
+    public final int[][] border;
 
     protected final TextureManager textureManager;
     protected final Identifier texture;
 
-    private int[][] border;
 
     public int x;
     public int y;
@@ -66,6 +66,7 @@ public class ScalableWidget extends ButtonWidget {
 
         this.middles = new int[5][4][2];
         this.corners = new int[4][4][2];
+        this.border = new int[4][2];
         this.slices = new int[][][][]{this.middles, this.corners};
         this.textureManager = CLIENT.getTextureManager();
         this.texture = texture;
@@ -100,21 +101,23 @@ public class ScalableWidget extends ButtonWidget {
     private void renderCorners(final MatrixStack matrices) {
         final int[][][] corners = this.corners;
 
-        final int width = corners[1][0][0] - corners[0][0][0];
-        final int height = corners[2][0][1] - corners[0][0][1];
-
         for (int i = 0, length = corners.length; i < length; i++) {
             final int[][] corner = corners[i];
             final int[] topLeft = corner[0];
+            final int u = topLeft[0];
+            final int v = topLeft[1];
+            final int width = corner[1][0] - u;
+            final int height = corner[2][1] - v;
 
-            drawTexture(matrices, this.x + i % 2 * width, this.y + i / 2 * height, this.z, topLeft[0], topLeft[1], corner[1][0] - topLeft[0], corner[2][1] - topLeft[1], this.textureHeight, this.textureWidth);
+            drawTexture(matrices, this.x + i % 2 * (this.width - width), this.y + i / 2 * (this.height - height), this.z, u, v, width, height, this.textureHeight, this.textureWidth);
         }
     }
 
     private void renderMiddles(final MatrixStack matrices) {
-        final int[][][][] slices = this.slices;
-        final int[][][] corners = this.corners;
         final int[][][] middles = this.middles;
+
+        final int middleWidth = this.width - this.corners[0][0][0] - this.corners[1][0][0];
+        final int middleHeight = this.height - this.corners[0][0][1] - this.corners[2][0][1];
 
         for (int i = 0, length = middles.length; i < length; i++) {
             final int[][] middle = middles[i];
@@ -126,27 +129,47 @@ public class ScalableWidget extends ButtonWidget {
             final int maxHeight = endV - v;
             int endX = this.x + this.width;
             int endY = this.y + this.height;
-            int remainingHeight = maxHeight;
+            int remainingHeight = middleHeight;
 
-
-            for (int j = i, slicesLength = slices.length; j < slicesLength; j++) {
-                final int[][][] slice = slices[j];
-
-
+            switch (i) {
+                case 0:
+                case 4:
+                    endX = this.x + middle[0][0] + middleWidth;
+                    break;
+                case 1:
+                    endX = this.x + middle[1][0];
+                    break;
+                case 3:
+                    endX = this.x + middles[1][1][0] + middleWidth + middle[1][0];
             }
 
-            if (i % 4 == 0) {
-                endX += u - corners[0][0][0];
-                endY += v - corners[0][0][1];
+            switch (i) {
+                case 0:
+                    endY = this.y + middle[1][1];
+                    break;
+                case 1:
+                case 3:
+                    endY = this.y + middle[0][1];
+                    break;
+                case 4:
+                    endY = this.y + middles[0][2][1] + middleHeight + middle[2][1];
+            }
+
+            if (i % 2 == 0) {
+                endX = this.x + middle[0][0] + middleWidth;
+            }
+
+            if (i % 4 != 0) {
+                endY = this.y + middle[0][1] + middleHeight;
             }
 
             while (remainingHeight > 0) {
-                final int drawnHeight = Math.min(remainingHeight, endV - v);
+                final int drawnHeight = Math.min(remainingHeight, maxHeight);
                 final int y = endY - remainingHeight;
-                int remainingWidth = maxWidth;
+                int remainingWidth = this.width;
 
                 while (remainingWidth > 0) {
-                    final int drawnWidth = Math.min(remainingWidth, endU - u);
+                    final int drawnWidth = Math.min(remainingWidth, maxWidth);
 
                     drawTexture(matrices, endX - remainingWidth, y, this.z, u, v, drawnWidth, drawnHeight, this.textureHeight, this.textureWidth);
 
@@ -168,8 +191,26 @@ public class ScalableWidget extends ButtonWidget {
         this.dirty = false;
     }
 
-    public void setSlices(final int u0, final int u1, final int u2,
-                          final int v0, final int v1, final int v2) {
+    public void setU(final int u) {
+        this.u = u;
+
+        this.dirty = true;
+    }
+
+    public void setV(final int v) {
+        this.v = v;
+
+        this.dirty = true;
+    }
+
+    public void setUV(final int u, final int v) {
+        this.u = u;
+        this.v = v;
+
+        this.dirty = true;
+    }
+
+    public void setSlices(final int u0, final int u1, final int u2, final int v0, final int v1, final int v2) {
         this.corners[2][3][0] = this.corners[2][1][0] = this.corners[0][3][0] = this.corners[0][1][0] = u0;
         this.corners[3][2][0] = this.corners[3][0][0] = this.corners[1][2][0] = this.corners[1][0][0] = u1;
         this.corners[3][3][0] = this.corners[3][1][0] = this.corners[1][3][0] = this.corners[1][1][0] = u2;
