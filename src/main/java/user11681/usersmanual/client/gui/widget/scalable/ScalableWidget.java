@@ -1,6 +1,8 @@
 package user11681.usersmanual.client.gui.widget.scalable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.texture.TextureManager;
@@ -8,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 public class ScalableWidget extends ButtonWidget {
     protected static final MinecraftClient CLIENT = MinecraftClient.getInstance();
 
@@ -18,8 +21,9 @@ public class ScalableWidget extends ButtonWidget {
     protected final TextureManager textureManager;
     protected final Identifier texture;
 
-    public int x;
-    public int y;
+    protected int trueX;
+    protected int trueY;
+
     public int z;
 
     public int u;
@@ -35,6 +39,16 @@ public class ScalableWidget extends ButtonWidget {
     public float g = 1;
     public float b = 1;
     public float a = 1;
+
+    public boolean center;
+
+    public ScalableWidget(final String identifier) {
+        this(new Identifier(identifier));
+    }
+
+    public ScalableWidget(final String namespace, final String path) {
+        this(new Identifier(namespace, path));
+    }
 
     public ScalableWidget(final Identifier texture) {
         super(0, 0, 0, 0, LiteralText.EMPTY, (final ButtonWidget widget) -> {});
@@ -67,6 +81,14 @@ public class ScalableWidget extends ButtonWidget {
             this.renderToolTip(matrices, mouseX, mouseY);
         }
 
+        if (this.center) {
+            this.trueX = this.x - this.width / 2;
+            this.trueY = this.y - this.height / 2;
+        } else {
+            this.trueX = this.x;
+            this.trueY = this.y;
+        }
+
         this.textureManager.bindTexture(this.texture);
 
         this.resetColor();
@@ -86,7 +108,7 @@ public class ScalableWidget extends ButtonWidget {
             final int width = corner[1][0] - u;
             final int height = corner[2][1] - v;
 
-            drawTexture(matrices, this.x + i % 2 * (this.width - width), this.y + i / 2 * (this.height - height), this.z, u, v, width, height, this.textureHeight, this.textureWidth);
+            drawTexture(matrices, this.trueX + i % 2 * (this.width - width), this.trueY + i / 2 * (this.height - height), this.z, this.u + u, this.v + v, width, height, this.textureHeight, this.textureWidth);
         }
     }
 
@@ -108,16 +130,16 @@ public class ScalableWidget extends ButtonWidget {
             int remainingHeight = i % 4 == 0 ? maxHeight : middleHeight;
 
             final int endX = i % 2 == 0
-                    ? this.x + middle[0][0] + middleWidth
+                    ? this.trueX + middle[0][0] + middleWidth
                     : i == 1
-                    ? this.x + middle[1][0]
-                    : this.x + middles[1][1][0] + middleWidth + middle[1][0] - middle[0][0];
+                    ? this.trueX + middle[1][0]
+                    : this.trueX + middles[1][1][0] + middleWidth + middle[1][0] - middle[0][0];
 
             final int endY = i % 4 != 0
-                    ? this.y + middle[0][1] + middleHeight
+                    ? this.trueY + middle[0][1] + middleHeight
                     : i == 0
-                    ? this.y + middle[2][1]
-                    : this.y + middles[0][2][1] + middleHeight + middle[2][1] - middle[0][1];
+                    ? this.trueY + middle[2][1]
+                    : this.trueY + middles[0][2][1] + middleHeight + middle[2][1] - middle[0][1];
 
             while (remainingHeight > 0) {
                 final int drawnHeight = Math.min(remainingHeight, maxHeight);
@@ -127,7 +149,7 @@ public class ScalableWidget extends ButtonWidget {
                 while (remainingWidth > 0) {
                     final int drawnWidth = Math.min(remainingWidth, maxWidth);
 
-                    drawTexture(matrices, endX - remainingWidth, y, this.z, u, v, drawnWidth, drawnHeight, this.textureHeight, this.textureWidth);
+                    drawTexture(matrices, endX - remainingWidth, y, this.z, this.u + u, this.v + v, drawnWidth, drawnHeight, this.textureHeight, this.textureWidth);
 
                     remainingWidth -= drawnWidth;
                 }
@@ -139,6 +161,13 @@ public class ScalableWidget extends ButtonWidget {
 
     protected void drawBorder() {
 
+    }
+
+    public void setSlices(final int u, final int v, final int u0, final int u1, final int u2, final int v0, final int v1, final int v2) {
+        this.u = u;
+        this.v = v;
+
+        this.setSlices(u0, u1, u2, v0, v1, v2);
     }
 
     public void setSlices(final int u0, final int u1, final int u2, final int v0, final int v1, final int v2) {
