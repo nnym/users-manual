@@ -1,106 +1,34 @@
 plugins {
-    id 'fabric-loom' version '0.4-SNAPSHOT'
-    id 'maven-publish'
+    id("java-library")
+    id("maven-publish")
+    id("fabric-loom").version("0.5-SNAPSHOT")
 }
 
-apply plugin: "maven"
-apply from: "project.gradle"
+version("0.1.0")
 
 sourceCompatibility = 17
 targetCompatibility = 17
 
-group = "user11681"
+minecraft {
+//    enumWidener('net/minecraft/enchantment/EnchantmentTarget')
+    accessWidener("accesswidener")
+}
 
 repositories {
-    mavenLocal()
-
-    maven {
-        url "https://jitpack.io"
-    }
-
-    maven {
-        url "https://maven.jamieswhiteshirt.com/libs-release"
-    }
-
-    maven {
-        name "Cotton"
-        url "https://server.bbkr.space/artifactory/libs-release"
-    }
-
-    maven {
-        url "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master"
-    }
-
-    maven {
-        url "https://repository.ow2.org/nexus/content/repositories/snapshots"
-    }
+    maven {url = "https://maven.auoeke.net"}
 }
 
 dependencies {
-    minecraft "${project.minecraft}"
-    mappings "${project.yarn}"
-    modImplementation "${project.loader}"
+    minecraft("com.mojang:minecraft:20w51a")
+    mappings("net.fabricmc:yarn:20w51a+build.5:v2")
+    modImplementation("net.fabricmc:fabric-loader:+")
 
-    compileOnly "${project.jetbrainsAnnotations}"
-    compileOnly "${project.jsr}"
+    api("net.gudenau.lib:unsafe:+")
+    api("net.auoeke:reflect:+")
+    api("net.fabricmc.fabric-api:fabric-api:+")
 
-//    modImplementation "com.jamieswhiteshirt:developer-mode:1.0.15"
-}
-
-
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
-        expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
-    }
-}
-
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
-    from sourceSets.main.allSource
-}
-
-jar {
-    from "LICENSE"
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    // select the repositories you want to publish to
-    repositories {
-        // uncomment to publish to the local maven
-        mavenLocal()
-    }
+    modApi(include("net.auoeke:romeral:+"))
+    modApi(include("net.fabricmc.fabric-api:fabric-api-base:+"))
+    modApi(include("net.fabricmc.fabric-api:fabric-lifecycle-events-v1:+"))
+    modApi(include("com.github.Chocohead:Fabric-ASM:master-SNAPSHOT"))
 }
