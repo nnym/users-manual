@@ -1,11 +1,10 @@
 package user11681.usersmanual.collections;
 
-import com.google.common.annotations.VisibleForTesting;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@VisibleForTesting
+// @VisibleForTesting
 public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> extends ArrayMap<K, V> {
     public SortedArrayMap(final Map<K, V> from) {
         super(from);

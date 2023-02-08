@@ -1,34 +1,16 @@
 plugins {
     id("java-library")
     id("maven-publish")
-    id("fabric-loom").version("0.5-SNAPSHOT")
+    id("net.auoeke.gronk").version("4.+")
 }
 
 version("0.1.0")
-
-sourceCompatibility = 17
-targetCompatibility = 17
-
-minecraft {
-//    enumWidener('net/minecraft/enchantment/EnchantmentTarget')
-    accessWidener("accesswidener")
-}
+javaVersion(17)
 
 repositories {
     maven {url = "https://maven.auoeke.net"}
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:20w51a")
-    mappings("net.fabricmc:yarn:20w51a+build.5:v2")
-    modImplementation("net.fabricmc:fabric-loader:+")
-
-    api("net.gudenau.lib:unsafe:+")
-    api("net.auoeke:reflect:+")
-    api("net.fabricmc.fabric-api:fabric-api:+")
-
-    modApi(include("net.auoeke:romeral:+"))
-    modApi(include("net.fabricmc.fabric-api:fabric-api-base:+"))
-    modApi(include("net.fabricmc.fabric-api:fabric-lifecycle-events-v1:+"))
-    modApi(include("com.github.Chocohead:Fabric-ASM:master-SNAPSHOT"))
+    api("net.auoeke:reflect", "net.auoeke:romeral", "net.auoeke:unsafe")
 }

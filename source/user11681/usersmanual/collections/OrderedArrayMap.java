@@ -3,7 +3,6 @@ package user11681.usersmanual.collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
 
 public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
     public OrderedArrayMap(final Map<K, V> map) {
@@ -28,7 +27,7 @@ public class OrderedArrayMap<K, V> extends ArrayMap<K, V> {
     }
 
     @Override
-    public void putAll(@Nonnull final Map<? extends K, ? extends V> map) {
+    public void putAll(final Map<? extends K, ? extends V> map) {
         final int size = this.size;
 
         if (size + map.size() >= this.length) {

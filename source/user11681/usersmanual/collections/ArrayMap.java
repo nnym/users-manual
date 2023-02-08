@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
 import user11681.usersmanual.util.Stringifiable;
 
 public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringifiable {
@@ -89,13 +88,11 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
     }
 
     @Override
-    @Nonnull
     public ArraySet<K> keySet() {
         return new ArraySet<>(this.size, this.keys);
     }
 
     @Override
-    @Nonnull
     public ArraySet<V> values() {
         return new ArraySet<>(this.size, this.values);
     }
@@ -196,14 +193,12 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         this.size = 0;
     }
 
-    @Nonnull
     @Override
     public Iterator<K> iterator() {
         return new ArrayMapIterator();
     }
 
     @Override
-    @Nonnull
     public ArraySet<Map.Entry<K, V>> entrySet() {
         final ArraySet<Map.Entry<K, V>> entries = new ArraySet<>();
         final K[] keys = this.keys;

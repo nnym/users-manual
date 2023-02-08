@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import javax.annotation.Nonnull;
 import user11681.usersmanual.util.Stringifiable;
 
 public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
@@ -42,12 +41,12 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     }
 
     @Override
-    public boolean addAll(@Nonnull final Collection<? extends E> collection) {
+    public boolean addAll(final Collection<? extends E> collection) {
         return this.addAll(this.size, collection);
     }
 
     @Override
-    public boolean addAll(final int index, @Nonnull final Collection<? extends E> collection) {
+    public boolean addAll(final int index, final Collection<? extends E> collection) {
         boolean changed = false;
 
         while (this.size + collection.size() >= this.length) {
@@ -196,25 +195,21 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     }
 
     @Override
-    @Nonnull
     public ListIterator<E> listIterator() {
         return new ArraySetListIterator();
     }
 
     @Override
-    @Nonnull
     public ListIterator<E> listIterator(final int index) {
         return new ArraySetListIterator(index);
     }
 
     @Override
-    @Nonnull
     public Iterator<E> iterator() {
         return new ArraySetIterator();
     }
 
     @Override
-    @Nonnull
     public List<E> subList(final int from, final int to) {
         return new ArraySet<>(to - from, Arrays.copyOfRange(this.elements, from, to));
     }
@@ -235,14 +230,12 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return this.indexOf(object) > -1;
     }
 
-    @Nonnull
     public E[] toArray() {
         return Arrays.copyOf(this.elements, this.size);
     }
 
     @Override
-    @Nonnull
-    public <T> T[] toArray(@Nonnull final T[] array) {
+    public <T> T[] toArray(final T[] array) {
         final int size = this.size;
 
         if (array.length < size) {
@@ -274,7 +267,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     }
 
     @Override
-    public boolean containsAll(@Nonnull final Collection<?> collection) {
+    public boolean containsAll(final Collection<?> collection) {
         for (final Object object : collection) {
             if (!this.contains(object)) {
                 return false;
@@ -285,7 +278,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     }
 
     @Override
-    public boolean retainAll(@Nonnull final Collection<?> collection) {
+    public boolean retainAll(final Collection<?> collection) {
         boolean changed = false;
 
         for (final E element : this.elements) {
@@ -300,7 +293,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     }
 
     @Override
-    public boolean removeAll(@Nonnull final Collection<?> collection) {
+    public boolean removeAll(final Collection<?> collection) {
         boolean changed = false;
 
         for (final E element : this.elements) {
@@ -384,7 +377,7 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         }
 
         @Override
-        public void forEachRemaining(@Nonnull final Consumer<? super E> action) {
+        public void forEachRemaining(final Consumer<? super E> action) {
             Objects.requireNonNull(action);
 
             final int size = ArraySet.this.size;
