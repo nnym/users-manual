@@ -6,16 +6,16 @@ import java.util.function.Supplier;
 
 // @VisibleForTesting
 public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> extends ArrayMap<K, V> {
-    public SortedArrayMap(final Map<K, V> from) {
+    public SortedArrayMap(Map<K, V> from) {
         super(from);
     }
 
-    public SortedArrayMap(final Supplier<V> defaultValueSupplier, final Iterable<K> keys) {
+    public SortedArrayMap(Supplier<V> defaultValueSupplier, Iterable<K> keys) {
         super(defaultValueSupplier, keys);
     }
 
     @SafeVarargs
-    public SortedArrayMap(final Supplier<V> defaultValueSupplier, final K... keys) {
+    public SortedArrayMap(Supplier<V> defaultValueSupplier, K... keys) {
         super(defaultValueSupplier, keys);
     }
 
@@ -23,28 +23,27 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         super();
     }
 
-    public SortedArrayMap(final int initialLength) {
+    public SortedArrayMap(int initialLength) {
         super(initialLength);
     }
 
-    public void putAll(final Map<? extends K, ? extends V> map) {
-        final Iterator<? extends K> keys = map.keySet().iterator();
-        final Iterator<? extends V> values = map.values().iterator();
+    @Override public void putAll(Map<? extends K, ? extends V> map) {
+        var keys = map.keySet().iterator();
+        var values = map.values().iterator();
 
         while (keys.hasNext()) {
             this.put(keys.next(), values.next());
         }
     }
 
-    @Override
-    public V put(final K key, final V value) {
-        final int size = this.size;
+    @Override public V put(K key, V value) {
+        var size = this.size;
 
         if (size == this.length) {
             this.resize(size * 2);
         }
 
-        int index = this.indexOfKey(key);
+        var index = this.indexOfKey(key);
 
         if (index < 0) {
             index = -index - 1;
@@ -53,7 +52,7 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
                 this.shift(1, index, size);
             }
         } else if (index < size) {
-            final V previous = this.values[index];
+            var previous = this.values[index];
 
             this.values[index] = value;
 
@@ -67,13 +66,13 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         return null;
     }
 
-    protected <T> int binarySearch(final T[] array, final Comparable<Object> target) {
-        int start = 0;
-        int end = this.size - 1;
+    protected <T> int binarySearch(T[] array, Comparable<Object> target) {
+        var start = 0;
+        var end = this.size - 1;
 
         while (start <= end) {
-            final int middle = (start + end) / 2;
-            final int compare = target.compareTo(array[middle]);
+            var middle = (start + end) / 2;
+            var compare = target.compareTo(array[middle]);
 
             if (compare < 0) {
                 end = middle - 1;
@@ -87,14 +86,14 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         return -start - 1;
     }
 
-    protected <T> int binarySearchFirst(final T[] array, final Comparable<Object> target) {
-        int start = 0;
-        int end = this.size - 1;
+    protected <T> int binarySearchFirst(T[] array, Comparable<Object> target) {
+        var start = 0;
+        var end = this.size - 1;
 
         while (start <= end) {
-            final int middle = (start + end) / 2;
-            final int previous = middle - 1;
-            final T middleElement = array[middle];
+            var middle = (start + end) / 2;
+            var previous = middle - 1;
+            var middleElement = array[middle];
 
             if (target.compareTo(middleElement) <= 0) {
                 end = previous;
@@ -133,20 +132,20 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
 */
 
     protected void sort() {
-        final int size = this.size;
-        final K[] keys = this.keys;
-        final V[] values = this.values;
-        final K[] tempKeys = ArrayUtil.comparable(size);
-        final V[] tempValues = ArrayUtil.comparable(size);
+        var size = this.size;
+        var keys = this.keys;
+        var values = this.values;
+        K[] tempKeys = ArrayUtil.comparable(size);
+        V[] tempValues = ArrayUtil.comparable(size);
 
-        for (int width = 1; width < size; width *= 2) {
-            for (int i = 0; i < size; i += 2 * width) {
-                final int right = Math.min(i + width, size);
-                final int end = Math.min(i + 2 * width, size);
-                int j = i;
-                int k = right;
+        for (var width = 1; width < size; width *= 2) {
+            for (var i = 0; i < size; i += 2 * width) {
+                var right = Math.min(i + width, size);
+                var end = Math.min(i + 2 * width, size);
+                var j = i;
+                var k = right;
 
-                for (int l = i; l < end; l++) {
+                for (var l = i; l < end; l++) {
                     if (j < right && (k >= end || keys[j].compareTo(keys[k]) <= 0)) {
                         tempKeys[l] = keys[j];
                         tempValues[l] = values[j++];
@@ -162,18 +161,16 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         }
     }
 
-    @Override
-    public int indexOfKey(final Object target) {
+    @Override public int indexOfKey(Object target) {
         //noinspection unchecked
         return target instanceof Comparable ? this.binarySearch(this.keys, (Comparable<Object>) target) : -1;
     }
 
-    @Override
-    public int indexOfValue(final Object target) {
-        final V[] values = this.values;
-        final int size = this.size;
+    @Override public int indexOfValue(Object target) {
+        var values = this.values;
+        var size = this.size;
 
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             if (values[i].equals(target)) {
                 return i;
             }
@@ -182,13 +179,12 @@ public class SortedArrayMap<K extends Comparable<K>, V extends Comparable<V>> ex
         return -size - 1;
     }
 
-    @Override
-    public int lastIndexOfValue(final Object target) {
-        final V[] values = this.values;
-        final int size = this.size;
-        int index = -size - 1;
+    @Override public int lastIndexOfValue(Object target) {
+        var values = this.values;
+        var size = this.size;
+        var index = -size - 1;
 
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             if (values[i].equals(target)) {
                 index = i;
             }

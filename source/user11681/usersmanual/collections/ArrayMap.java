@@ -17,8 +17,8 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
     protected int length;
     protected int size;
 
-    public ArrayMap(final Map<K, V> from) {
-        final int size = from.size();
+    public ArrayMap(Map<K, V> from) {
+        var size = from.size();
 
         this.keys = ArrayUtil.create(size);
         this.values = ArrayUtil.create(size);
@@ -26,19 +26,19 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         this.putAll(from);
     }
 
-    public ArrayMap(final Supplier<V> valueSupplier, final Iterable<K> keys) {
+    public ArrayMap(Supplier<V> valueSupplier, Iterable<K> keys) {
         this();
 
-        for (final K key : keys) {
+        for (var key : keys) {
             this.put(key, valueSupplier.get());
         }
     }
 
     @SafeVarargs
-    public ArrayMap(final Supplier<V> valueSupplier, final K... keys) {
+    public ArrayMap(Supplier<V> valueSupplier, K... keys) {
         this();
 
-        for (final K key : keys) {
+        for (var key : keys) {
             this.put(key, valueSupplier.get());
         }
     }
@@ -47,7 +47,7 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         this(10);
     }
 
-    public ArrayMap(final int initialLength) {
+    public ArrayMap(int initialLength) {
         this.keys = ArrayUtil.create(initialLength);
         this.values = ArrayUtil.create(initialLength);
         this.length = initialLength;
@@ -59,13 +59,11 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
 
     public abstract int lastIndexOfValue(Object target);
 
-    @Override
-    public boolean containsKey(Object key) {
+    @Override public boolean containsKey(Object key) {
         return this.indexOfKey(key) > -1;
     }
 
-    @Override
-    public boolean containsValue(Object value) {
+    @Override public boolean containsValue(Object value) {
         return this.indexOfValue(value) > -1;
     }
 
@@ -73,13 +71,13 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         this.resize(this.size);
     }
 
-    public void resize(final int newLength) {
+    public void resize(int newLength) {
         this.keys = Arrays.copyOf(this.keys, newLength);
         this.values = Arrays.copyOf(this.values, newLength);
         this.length = newLength;
     }
 
-    public int size() {
+    @Override public int size() {
         return this.size;
     }
 
@@ -87,17 +85,15 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         return this.length;
     }
 
-    @Override
-    public ArraySet<K> keySet() {
+    @Override public ArraySet<K> keySet() {
         return new ArraySet<>(this.size, this.keys);
     }
 
-    @Override
-    public ArraySet<V> values() {
+    @Override public ArraySet<V> values() {
         return new ArraySet<>(this.size, this.values);
     }
 
-    public K getKey(final int index) {
+    public K getKey(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException("" + index);
         }
@@ -105,7 +101,7 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         return this.keys[index];
     }
 
-    public V get(final int index) {
+    public V get(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException("" + index);
         }
@@ -113,14 +109,14 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         return this.values[index];
     }
 
-    public V get(final Object key) {
-        final int index = this.indexOfKey(key);
+    @Override public V get(Object key) {
+        var index = this.indexOfKey(key);
 
         return index < 0 ? null : this.get(index);
     }
 
-    public void removeIf(final Predicate<K> predicate) {
-        final Iterator<K> iterator = this.iterator();
+    public void removeIf(Predicate<K> predicate) {
+        var iterator = this.iterator();
 
         while (iterator.hasNext()) {
             if (predicate.test(iterator.next())) {
@@ -129,8 +125,8 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         }
     }
 
-    public V remove(final Object target) {
-        final int index = this.indexOfKey(target);
+    @Override public V remove(Object target) {
+        var index = this.indexOfKey(target);
 
         if (index < -1 || index >= this.size) {
             return null;
@@ -139,17 +135,17 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         return this.remove(index);
     }
 
-    public V remove(final int index) {
-        final int size = this.size;
+    public V remove(int index) {
+        var size = this.size;
 
         if (index >= size) {
             throw new IndexOutOfBoundsException("" + index);
         }
 
-        final V[] values = this.values;
-        final K[] keys = this.keys;
+        var values = this.values;
+        var keys = this.keys;
 
-        final V removed = values[index];
+        var removed = values[index];
 
         this.shift(-1, index + 1, size);
 
@@ -161,20 +157,19 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         return removed;
     }
 
-    protected void shift(final int shift, final int start, final int end) {
+    protected void shift(int shift, int start, int end) {
         System.arraycopy(this.keys, start, this.keys, start + shift, end - start);
         System.arraycopy(this.values, start, this.values, start + shift, end - start);
     }
 
-    public boolean isEmpty() {
+    @Override public boolean isEmpty() {
         return this.size == 0;
     }
 
-    @Override
-    public String asString() {
-        final StringBuilder builder = new StringBuilder("{");
-        final K[] keys = this.keys;
-        final V[] values = this.values;
+    @Override public String asString() {
+        var builder = new StringBuilder("{");
+        var keys = this.keys;
+        var values = this.values;
 
         for (int i = 0, size = this.size; i < size; i++) {
             builder.append(String.format("{%s: %s}", keys[i], values[i]));
@@ -187,22 +182,20 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         return builder.append('}').toString();
     }
 
-    public void clear() {
+    @Override public void clear() {
         this.keys = ArrayUtil.create(this.length);
         this.values = ArrayUtil.create(this.length);
         this.size = 0;
     }
 
-    @Override
-    public Iterator<K> iterator() {
+    @Override public Iterator<K> iterator() {
         return new ArrayMapIterator();
     }
 
-    @Override
-    public ArraySet<Map.Entry<K, V>> entrySet() {
-        final ArraySet<Map.Entry<K, V>> entries = new ArraySet<>();
-        final K[] keys = this.keys;
-        final V[] values = this.values;
+    @Override public ArraySet<Map.Entry<K, V>> entrySet() {
+        var entries = new ArraySet<Map.Entry<K, V>>();
+        var keys = this.keys;
+        var values = this.values;
 
         for (int i = 0, size = this.size; i < size; i++) {
             entries.add(new Entry<>(keys[i], values[i]));
@@ -215,14 +208,12 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         public int index = 0;
         public int lastReturned = -1;
 
-        @Override
-        public boolean hasNext() {
+        @Override public boolean hasNext() {
             return this.index < ArrayMap.this.size;
         }
 
-        @Override
-        public K next() {
-            final int index = this.index;
+        @Override public K next() {
+            var index = this.index;
 
             if (index >= ArrayMap.this.size) {
                 throw new NoSuchElementException();
@@ -235,33 +226,31 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
             return ArrayMap.this.keys[this.lastReturned = this.index++];
         }
 
-        @Override
-        public void remove() {
+        @Override public void remove() {
             if (this.lastReturned < 0) {
                 throw new IllegalStateException();
             }
 
             try {
-                final int returned = this.lastReturned;
+                var returned = this.lastReturned;
 
                 ArrayMap.this.remove(returned);
 
                 this.index = this.lastReturned;
                 this.lastReturned = -1;
-            } catch (final IndexOutOfBoundsException exception) {
+            } catch (IndexOutOfBoundsException exception) {
                 throw new ConcurrentModificationException();
             }
         }
 
-        @Override
-        public void forEachRemaining(final Consumer<? super K> action) {
+        @Override public void forEachRemaining(Consumer<? super K> action) {
             Objects.requireNonNull(action);
 
-            final int size = ArrayMap.this.size;
-            int index = this.index;
+            var size = ArrayMap.this.size;
+            var index = this.index;
 
             if (index < size) {
-                if (index >= length) {
+                if (index >= ArrayMap.this.length) {
                     throw new ConcurrentModificationException();
                 }
 
@@ -279,35 +268,31 @@ public abstract class ArrayMap<K, V> implements Map<K, V>, Iterable<K>, Stringif
         protected K key;
         protected V value;
 
-        public Entry(final K key) {
+        public Entry(K key) {
             this.key = key;
         }
 
-        public Entry(final K key, final V value) {
+        public Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }
 
-        @Override
-        public K getKey() {
+        @Override public K getKey() {
             return this.key;
         }
 
-        @Override
-        public V getValue() {
+        @Override public V getValue() {
             return this.value;
         }
 
-        @Override
-        public V setValue(final V value) {
-            final V old = this.value;
+        @Override public V setValue(V value) {
+            var old = this.value;
 
             this.value = value;
             return old;
         }
 
-        @Override
-        public String asString() {
+        @Override public String asString() {
             return String.format("{%s: %s}", this.key, this.value);
         }
     }

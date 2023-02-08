@@ -22,43 +22,41 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         this(10);
     }
 
-    public ArraySet(final int initialLength) {
+    public ArraySet(int initialLength) {
         this.elements = ArrayUtil.create(initialLength);
         this.length = initialLength;
     }
 
-    public ArraySet(final int length, final Collection<E> from) {
+    public ArraySet(int length, Collection<E> from) {
         this.elements = ArrayUtil.create(length);
         //noinspection SuspiciousSystemArraycopy
-        System.arraycopy(from.toArray(), 0, elements, 0, length);
+        System.arraycopy(from.toArray(), 0, this.elements, 0, length);
         this.size = this.length = length;
     }
 
     @SafeVarargs
-    public ArraySet(final int length, final E... from) {
+    public ArraySet(int length, E... from) {
         this.elements = Arrays.copyOf(from, length);
         this.size = this.length = length;
     }
 
-    @Override
-    public boolean addAll(final Collection<? extends E> collection) {
+    @Override public boolean addAll(Collection<? extends E> collection) {
         return this.addAll(this.size, collection);
     }
 
-    @Override
-    public boolean addAll(final int index, final Collection<? extends E> collection) {
-        boolean changed = false;
+    @Override public boolean addAll(int index, Collection<? extends E> collection) {
+        var changed = false;
 
         while (this.size + collection.size() >= this.length) {
             this.expand();
         }
 
-        for (final E element : collection) {
-            int elementIndex = this.indexOf(element);
+        for (E element : collection) {
+            var elementIndex = this.indexOf(element);
 
             if (elementIndex < 0) {
                 elementIndex = -elementIndex - 1;
-                final int oldSize = this.size++;
+                var oldSize = this.size++;
 
                 if (elementIndex < oldSize) {
                     System.arraycopy(this.elements, elementIndex, this.elements, elementIndex + 1, oldSize);
@@ -73,25 +71,23 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return changed;
     }
 
-    @Override
-    public boolean add(final E element) {
-        final boolean contains = this.contains(element);
+    @Override public boolean add(E element) {
+        var contains = this.contains(element);
 
         this.add(this.size, element);
 
         return !contains;
     }
 
-    @Override
-    public void add(final int index, final E element) {
-        int size = this.size;
+    @Override public void add(int index, E element) {
+        var size = this.size;
 
         if (index > size) {
             throw new IndexOutOfBoundsException("" + index);
         }
 
         if (!this.contains(element)) {
-            E[] elements = this.elements;
+            var elements = this.elements;
 
             if (index < size) {
                 System.arraycopy(elements, index, elements, index + 1, size - index);
@@ -107,26 +103,25 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     }
 
     public void trimToSize() {
-        final int size = this.size;
+        var size = this.size;
 
         this.resize(size);
         this.length = size;
     }
 
     public void expand() {
-        final int length = this.size * 2;
+        var length = this.size * 2;
 
         this.elements = Arrays.copyOf(this.elements, length);
         this.length = length;
     }
 
-    public void resize(final int length) {
+    public void resize(int length) {
         this.elements = Arrays.copyOf(this.elements, length);
         this.length = length;
     }
 
-    @Override
-    public E get(final int index) {
+    @Override public E get(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException("" + index);
         }
@@ -134,29 +129,27 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return this.elements[index];
     }
 
-    @Override
-    public E set(final int index, final E element) {
+    @Override public E set(int index, E element) {
         if (index > this.size) {
             throw new IndexOutOfBoundsException("" + index);
         }
 
-        final E[] elements = this.elements;
-        final E previous = elements[index];
+        var elements = this.elements;
+        var previous = elements[index];
 
         elements[index] = element;
 
         return previous;
     }
 
-    @Override
-    public E remove(final int index) {
+    @Override public E remove(int index) {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException("" + index);
         }
 
-        final E[] elements = this.elements;
-        final E previous = elements[index];
-        final int start = index + 1;
+        var elements = this.elements;
+        var previous = elements[index];
+        var start = index + 1;
 
         System.arraycopy(elements, start, elements, index, this.size - start);
 
@@ -165,12 +158,11 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return previous;
     }
 
-    @Override
-    public int indexOf(final Object object) {
-        final E[] elements = this.elements;
-        final int size = this.size;
+    @Override public int indexOf(Object object) {
+        var elements = this.elements;
+        var size = this.size;
 
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             if (elements[i].equals(object)) {
                 return i;
             }
@@ -179,13 +171,12 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return -size - 1;
     }
 
-    @Override
-    public int lastIndexOf(final Object object) {
-        final E[] elements = this.elements;
-        final int size = this.size;
-        int index = -size - 1;
+    @Override public int lastIndexOf(Object object) {
+        var elements = this.elements;
+        var size = this.size;
+        var index = -size - 1;
 
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             if (elements[i].equals(object)) {
                 index = i;
             }
@@ -194,49 +185,41 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return index;
     }
 
-    @Override
-    public ListIterator<E> listIterator() {
+    @Override public ListIterator<E> listIterator() {
         return new ArraySetListIterator();
     }
 
-    @Override
-    public ListIterator<E> listIterator(final int index) {
+    @Override public ListIterator<E> listIterator(int index) {
         return new ArraySetListIterator(index);
     }
 
-    @Override
-    public Iterator<E> iterator() {
+    @Override public Iterator<E> iterator() {
         return new ArraySetIterator();
     }
 
-    @Override
-    public List<E> subList(final int from, final int to) {
+    @Override public List<E> subList(int from, int to) {
         return new ArraySet<>(to - from, Arrays.copyOfRange(this.elements, from, to));
     }
 
-    @Override
-    public int size() {
+    @Override public int size() {
         return this.size;
     }
 
-    @Override
-    public boolean isEmpty() {
+    @Override public boolean isEmpty() {
         return this.size == 0;
     }
 
-    @Override
-    public boolean contains(final Object object) {
+    @Override public boolean contains(Object object) {
         //noinspection ListIndexOfReplaceableByContains
         return this.indexOf(object) > -1;
     }
 
-    public E[] toArray() {
+    @Override public E[] toArray() {
         return Arrays.copyOf(this.elements, this.size);
     }
 
-    @Override
-    public <T> T[] toArray(final T[] array) {
-        final int size = this.size;
+    @Override public <T> T[] toArray(T[] array) {
+        var size = this.size;
 
         if (array.length < size) {
             //noinspection unchecked
@@ -253,9 +236,8 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return array;
     }
 
-    @Override
-    public boolean remove(final Object object) {
-        final int index = this.indexOf(object);
+    @Override public boolean remove(Object object) {
+        var index = this.indexOf(object);
 
         if (index > -1) {
             this.remove(index);
@@ -266,9 +248,8 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return false;
     }
 
-    @Override
-    public boolean containsAll(final Collection<?> collection) {
-        for (final Object object : collection) {
+    @Override public boolean containsAll(Collection<?> collection) {
+        for (Object object : collection) {
             if (!this.contains(object)) {
                 return false;
             }
@@ -277,11 +258,10 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return true;
     }
 
-    @Override
-    public boolean retainAll(final Collection<?> collection) {
-        boolean changed = false;
+    @Override public boolean retainAll(Collection<?> collection) {
+        var changed = false;
 
-        for (final E element : this.elements) {
+        for (var element : this.elements) {
             if (!collection.contains(element)) {
                 this.remove(element);
 
@@ -292,11 +272,10 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return changed;
     }
 
-    @Override
-    public boolean removeAll(final Collection<?> collection) {
-        boolean changed = false;
+    @Override public boolean removeAll(Collection<?> collection) {
+        var changed = false;
 
-        for (final E element : this.elements) {
+        for (var element : this.elements) {
             if (collection.contains(element)) {
                 this.remove(element);
 
@@ -307,22 +286,19 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         return changed;
     }
 
-    @Override
-    public void clear() {
+    @Override public void clear() {
         this.elements = ArrayUtil.create(this.length);
         this.size = 0;
     }
 
-    @Override
-    public Spliterator<E> spliterator() {
+    @Override public Spliterator<E> spliterator() {
         return List.super.spliterator();
     }
 
-    @Override
-    public String asString() {
-        final StringBuilder string = new StringBuilder("{");
+    @Override public String asString() {
+        var string = new StringBuilder("{");
 
-        final E[] elements = this.elements;
+        var elements = this.elements;
 
         for (int i = 0, size = this.size; i < size; i++) {
             string.append(elements[i]);
@@ -339,14 +315,12 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
         int index;
         int lastReturned = -1;
 
-        @Override
-        public boolean hasNext() {
+        @Override public boolean hasNext() {
             return this.index < ArraySet.this.size;
         }
 
-        @Override
-        public E next() {
-            final int index = this.index;
+        @Override public E next() {
+            var index = this.index;
 
             if (index >= ArraySet.this.size) {
                 throw new NoSuchElementException();
@@ -359,9 +333,8 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
             return ArraySet.this.elements[this.lastReturned = this.index++];
         }
 
-        @Override
-        public void remove() {
-            int lastReturned = this.lastReturned;
+        @Override public void remove() {
+            var lastReturned = this.lastReturned;
 
             if (lastReturned < 0) {
                 throw new IllegalStateException();
@@ -369,19 +342,18 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
 
             try {
                 ArraySet.this.remove(lastReturned);
-                index = lastReturned;
+                this.index = lastReturned;
                 this.lastReturned = -1;
-            } catch (final IndexOutOfBoundsException exception) {
+            } catch (IndexOutOfBoundsException exception) {
                 throw new ConcurrentModificationException();
             }
         }
 
-        @Override
-        public void forEachRemaining(final Consumer<? super E> action) {
+        @Override public void forEachRemaining(Consumer<? super E> action) {
             Objects.requireNonNull(action);
 
-            final int size = ArraySet.this.size;
-            int index = this.index;
+            var size = ArraySet.this.size;
+            var index = this.index;
 
             if (index < size) {
                 if (index >= ArraySet.this.length) {
@@ -401,18 +373,16 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
     public class ArraySetListIterator extends ArraySetIterator implements ListIterator<E> {
         public ArraySetListIterator() {}
 
-        public ArraySetListIterator(final int index) {
+        public ArraySetListIterator(int index) {
             this.index = index;
         }
 
-        @Override
-        public boolean hasPrevious() {
+        @Override public boolean hasPrevious() {
             return this.index > 0;
         }
 
-        @Override
-        public E previous() {
-            final int previous = this.index - 1;
+        @Override public E previous() {
+            var previous = this.index - 1;
 
             if (previous < 0) {
                 throw new NoSuchElementException();
@@ -427,19 +397,16 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
             return ArraySet.this.elements[this.lastReturned = previous];
         }
 
-        @Override
-        public int nextIndex() {
+        @Override public int nextIndex() {
             return this.index;
         }
 
-        @Override
-        public int previousIndex() {
+        @Override public int previousIndex() {
             return this.index - 1;
         }
 
-        @Override
-        public void set(final E element) {
-            final int lastReturned = this.lastReturned;
+        @Override public void set(E element) {
+            var lastReturned = this.lastReturned;
 
             if (lastReturned < 0) {
                 throw new NoSuchElementException();
@@ -447,20 +414,19 @@ public class ArraySet<E> implements Set<E>, List<E>, Stringifiable {
 
             try {
                 ArraySet.this.set(lastReturned, element);
-            } catch (final IndexOutOfBoundsException exception) {
+            } catch (IndexOutOfBoundsException exception) {
                 throw new ConcurrentModificationException();
             }
         }
 
-        @Override
-        public void add(final E element) {
-            final int index = this.index;
+        @Override public void add(E element) {
+            var index = this.index;
 
             try {
                 ArraySet.this.add(index, element);
                 ++this.index;
                 this.lastReturned = -1;
-            } catch (final IndexOutOfBoundsException exception) {
+            } catch (IndexOutOfBoundsException exception) {
                 throw new ConcurrentModificationException();
             }
         }

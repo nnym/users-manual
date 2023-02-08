@@ -4,12 +4,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtil {
-    public static String macroCaseToCamelCase(final String string) {
-        final StringBuilder builder = new StringBuilder();
-        final char[] chars = string.toLowerCase().toCharArray();
+    public static String macroCaseToCamelCase(String string) {
+        var builder = new StringBuilder();
+        var chars = string.toLowerCase().toCharArray();
 
-        for (int i = 0; i < chars.length; i++) {
-            char character = chars[i];
+        for (var i = 0; i < chars.length; i++) {
+            var character = chars[i];
 
             if (character == '_') {
                 character = (char) (chars[++i] - 32);
@@ -21,11 +21,11 @@ public class StringUtil {
         return builder.toString();
     }
 
-    public static boolean contains(final String string, final String regex) {
+    public static boolean contains(String string, String regex) {
         return Pattern.compile(regex).matcher(string).find();
     }
 
-    public static Matcher match(final String string, final String regex) {
+    public static Matcher match(String string, String regex) {
         return Pattern.compile(regex).matcher(string);
     }
 }
